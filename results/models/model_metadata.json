@@ -1,0 +1,22 @@
+{
+  "model_type": "CatBoostClassifier",
+  "num_features": 60,
+  "classes": {
+    "0": "Typical Developing (TD)",
+    "1": "Autism Spectrum Disorder (ASD)"
+  },
+  "hyperparameters": {
+    "iterations": 450,
+    "learning_rate": 0.0366373096088456,
+    "depth": 7,
+    "l2_leaf_reg": 1.2491751815165124,
+    "random_strength": 4.927101195679697,
+    "bagging_temperature": 1.4829332610951664,
+    "border_count": 32,
+    "loss_function": "Logloss",
+    "eval_metric": "Accuracy",
+    "random_seed": 42,
+    "verbose": 0,
+    "thread_count": -1
+  }
+}

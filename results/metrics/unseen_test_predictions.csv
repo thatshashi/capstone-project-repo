@@ -1,0 +1,61 @@
+Sample_ID,Predicted_Diagnosis,ASD_Probability_%,Typical_Probability_%,Confidence_%,Confidence_Level,Actual_Diagnosis,Verification
+Child_001,ASD,99.97,0.03,99.97,Very High,ASD,CORRECT
+Child_002,ASD,99.98,0.02,99.98,Very High,ASD,CORRECT
+Child_003,Typical (TD),0.08,99.92,99.92,Very High,Typical (TD),CORRECT
+Child_004,Typical (TD),0.03,99.97,99.97,Very High,Typical (TD),CORRECT
+Child_005,ASD,99.72,0.28,99.72,Very High,ASD,CORRECT
+Child_006,Typical (TD),0.13,99.87,99.87,Very High,Typical (TD),CORRECT
+Child_007,Typical (TD),0.01,99.99,99.99,Very High,Typical (TD),CORRECT
+Child_008,Typical (TD),0.04,99.96,99.96,Very High,Typical (TD),CORRECT
+Child_009,ASD,99.9,0.1,99.9,Very High,ASD,CORRECT
+Child_010,Typical (TD),0.01,99.99,99.99,Very High,Typical (TD),CORRECT
+Child_011,Typical (TD),0.04,99.96,99.96,Very High,Typical (TD),CORRECT
+Child_012,Typical (TD),0.03,99.97,99.97,Very High,Typical (TD),CORRECT
+Child_013,Typical (TD),0.03,99.97,99.97,Very High,Typical (TD),CORRECT
+Child_014,ASD,99.98,0.02,99.98,Very High,ASD,CORRECT
+Child_015,Typical (TD),0.4,99.6,99.6,Very High,Typical (TD),CORRECT
+Child_016,ASD,99.84,0.16,99.84,Very High,ASD,CORRECT
+Child_017,ASD,99.89,0.11,99.89,Very High,ASD,CORRECT
+Child_018,ASD,99.97,0.03,99.97,Very High,ASD,CORRECT
+Child_019,Typical (TD),0.08,99.92,99.92,Very High,Typical (TD),CORRECT
+Child_020,ASD,99.99,0.01,99.99,Very High,ASD,CORRECT
+Child_021,Typical (TD),0.04,99.96,99.96,Very High,Typical (TD),CORRECT
+Child_022,ASD,99.98,0.02,99.98,Very High,ASD,CORRECT
+Child_023,Typical (TD),0.03,99.97,99.97,Very High,Typical (TD),CORRECT
+Child_024,Typical (TD),0.02,99.98,99.98,Very High,Typical (TD),CORRECT
+Child_025,ASD,99.97,0.03,99.97,Very High,ASD,CORRECT
+Child_026,Typical (TD),0.66,99.34,99.34,Very High,Typical (TD),CORRECT
+Child_027,ASD,99.98,0.02,99.98,Very High,ASD,CORRECT
+Child_028,ASD,99.98,0.02,99.98,Very High,ASD,CORRECT
+Child_029,ASD,99.95,0.05,99.95,Very High,ASD,CORRECT
+Child_030,Typical (TD),0.03,99.97,99.97,Very High,Typical (TD),CORRECT
+Child_031,ASD,99.88,0.12,99.88,Very High,ASD,CORRECT
+Child_032,ASD,99.78,0.22,99.78,Very High,ASD,CORRECT
+Child_033,ASD,99.91,0.09,99.91,Very High,ASD,CORRECT
+Child_034,Typical (TD),0.04,99.96,99.96,Very High,Typical (TD),CORRECT
+Child_035,ASD,99.78,0.22,99.78,Very High,ASD,CORRECT
+Child_036,Typical (TD),0.06,99.94,99.94,Very High,Typical (TD),CORRECT
+Child_037,Typical (TD),0.06,99.94,99.94,Very High,Typical (TD),CORRECT
+Child_038,Typical (TD),0.7,99.3,99.3,Very High,Typical (TD),CORRECT
+Child_039,Typical (TD),0.66,99.34,99.34,Very High,Typical (TD),CORRECT
+Child_040,ASD,99.27,0.73,99.27,Very High,ASD,CORRECT
+Child_041,Typical (TD),0.04,99.96,99.96,Very High,Typical (TD),CORRECT
+Child_042,ASD,99.99,0.01,99.99,Very High,ASD,CORRECT
+Child_043,ASD,99.98,0.02,99.98,Very High,ASD,CORRECT
+Child_044,ASD,99.98,0.02,99.98,Very High,ASD,CORRECT
+Child_045,Typical (TD),0.09,99.91,99.91,Very High,Typical (TD),CORRECT
+Child_046,Typical (TD),0.05,99.95,99.95,Very High,Typical (TD),CORRECT
+Child_047,Typical (TD),0.16,99.84,99.84,Very High,Typical (TD),CORRECT
+Child_048,ASD,99.98,0.02,99.98,Very High,ASD,CORRECT
+Child_049,Typical (TD),0.03,99.97,99.97,Very High,Typical (TD),CORRECT
+Child_050,ASD,99.96,0.04,99.96,Very High,ASD,CORRECT
+Child_051,ASD,99.15,0.85,99.15,Very High,ASD,CORRECT
+Child_052,ASD,99.72,0.28,99.72,Very High,ASD,CORRECT
+Child_053,Typical (TD),0.28,99.72,99.72,Very High,Typical (TD),CORRECT
+Child_054,ASD,99.85,0.15,99.85,Very High,ASD,CORRECT
+Child_055,ASD,98.67,1.33,98.67,Very High,ASD,CORRECT
+Child_056,Typical (TD),0.02,99.98,99.98,Very High,Typical (TD),CORRECT
+Child_057,ASD,99.93,0.07,99.93,Very High,ASD,CORRECT
+Child_058,ASD,99.95,0.05,99.95,Very High,ASD,CORRECT
+Child_059,Typical (TD),0.01,99.99,99.99,Very High,Typical (TD),CORRECT
+Child_060,Typical (TD),0.06,99.94,99.94,Very High,Typical (TD),CORRECT

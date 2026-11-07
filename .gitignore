@@ -1,0 +1,33 @@
+# Large archive files & videos
+Dataset.zip
+Dataset-2.rar
+*.avi
+*.mp4
+Dataset/Autism/
+Dataset/Typical/
+Dataset/Severe level of ASD/
+
+# Raw training datasets (only test datasets are pushed)
+Final dataset*.xlsx
+Research.md
+train_and_evaluate.py
+evaluate_and_plot.py
+notebooks/
+
+# Python cache & build files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+catboost_info/
+
+# OS-specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

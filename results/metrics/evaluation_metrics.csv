@@ -1,0 +1,2 @@
+accuracy_mean,accuracy_std,f1_mean,f1_std,sensitivity_mean,sensitivity_std,specificity_mean,specificity_std,roc_auc_mean,roc_auc_std,precision_oof,cohen_kappa_oof,overall_specificity,accuracy_oof_bootstrap_low,accuracy_oof_bootstrap_high
+0.9925,0.0069221865524317135,0.9924885398760225,0.006931392660444488,0.9916666666666667,0.011785113019775804,0.9933333333333334,0.011055415967851345,0.9998125000000001,0.0004315065661918365,0.9925,0.985,0.9925,0.98625,0.9975

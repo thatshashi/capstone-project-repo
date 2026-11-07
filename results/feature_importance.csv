@@ -1,0 +1,16 @@
+rank,feature_name,mean_abs_shap,clinical_interpretation
+1,norm_y_HipLeft_mean,1.987486,"Mean Normalized HipLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
+2,sagittal_knee_flexion_left_ang_vel_mean,0.693209,Sagittal Left Knee Flexion Angle (ANG VEL MEAN) - Lower-limb sagittal flexion dynamics
+3,cross_dist_left_wrist_right_ankle_mean,0.671938,Mean Contralateral Cross-Distance (Left Wrist to Right Ankle) - Distal diagonal inter-limb coordination
+4,elbow_right_rel_height_mean,0.668558,Mean Right Elbow Vertical Elevation relative to SpineBase - Forearm flexion/guarding elevation
+5,wrist_right_rel_height_mean,0.57843,Mean Right Wrist Vertical Elevation relative to SpineBase - Upper-limb guarding posture
+6,norm_y_WristRight_std,0.529076,"Std Normalized WristRight Position along Y-Axis (SpineBase-centered, torso-scaled)"
+7,norm_z_ElbowLeft_mean,0.5219,"Mean Normalized ElbowLeft Position along Z-Axis (SpineBase-centered, torso-scaled)"
+8,step_dominant_rhythm_ratio,0.355966,Dominant Step Rhythm Ratio - Harmonic concentration of the fundamental stride frequency
+9,ankle_right_vel_z_std,0.338621,Right Ankle 1st-Order Velocity (STD) - Distal extremity kinematic derivative
+10,sagittal_knee_flexion_right_mean,0.316386,Sagittal Right Knee Flexion Angle (MEAN) - Lower-limb sagittal flexion dynamics
+11,cross_dist_right_wrist_left_ankle_mean,0.316218,Mean Contralateral Cross-Distance (Right Wrist to Left Ankle) - Distal diagonal inter-limb coordination
+12,cross_dist_left_elbow_right_foot_mean,0.261789,Mean Contralateral Cross-Distance (Left Elbow to Right Foot) - Diagonal inter-limb coordination
+13,arm_swing_sagittal_asymmetry,0.246444,Sagittal Arm Swing Asymmetry Index - Anterior-posterior reciprocal arm swing imbalance
+14,shoulder_angle_right_mean,0.185781,Mean Right Shoulder Abduction/Flexion Angle (deg) - Upper-arm postural abduction
+15,step_spectral_irregularity,0.185693,Step Spectral Entropy - Frequency-domain irregularity of lower-limb gait periodicity

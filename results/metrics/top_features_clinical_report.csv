@@ -1,0 +1,21 @@
+Rank,Feature Name,Mean |SHAP| Value,Clinical & Biomechanical Interpretation
+1,mean-y-WristRight,1.3831,Mean of WristRight Position along Y-axis (Postural Dynamic)
+2,mean-y-WristLeft,1.0012,Mean of WristLeft Position along Y-axis (Postural Dynamic)
+3,mean-y-ElbowRight,0.7993,Mean of ElbowRight Position along Y-axis (Postural Dynamic)
+4,mean-y-SpineShoulder,0.6397,Mean of SpineShoulder Position along Y-axis (Postural Dynamic)
+5,mean HESHL,0.531,Kinematic Metric: mean HESHL
+6,mean SPELL,0.4084,Kinematic Metric: mean SPELL
+7,variance HIANL,0.3905,Kinematic Metric: variance HIANL
+8,mean-y-AnkleLeft,0.3866,Mean of AnkleLeft Position along Y-axis (Postural Dynamic)
+9,std-y-KneeRight,0.3128,Standard Deviation of KneeRight Position along Y-axis (Postural Dynamic)
+10,std HESHR,0.296,Kinematic Metric: std HESHR
+11,mean THHAL,0.2901,Mean Euclidean Distance between  and HHAL
+12,mean HIANL,0.1873,Kinematic Metric: mean HIANL
+13,variance SPKNR,0.1451,Kinematic Metric: variance SPKNR
+14,mean HESHR,0.1426,Kinematic Metric: mean HESHR
+15,variance-z-FootRight,0.141,Variance (Fluctuation) of FootRight Position along Z-axis (Postural Dynamic)
+16,std-z-KneeRight,0.1311,Standard Deviation of KneeRight Position along Z-axis (Postural Dynamic)
+17,mean SHWRR,0.12,Kinematic Metric: mean SHWRR
+18,mean-z-AnkleLeft,0.1162,Mean of AnkleLeft Position along Z-axis (Postural Dynamic)
+19,variance SPELR,0.1121,Kinematic Metric: variance SPELR
+20,std-z-WristLeft,0.1108,Standard Deviation of WristLeft Position along Z-axis (Postural Dynamic)

@@ -1,0 +1,9 @@
+Metric Name,Score,95% Confidence Interval,Clinical Meaning
+Overall Accuracy,99.25%,"[98.62%, 99.75%]",Proportion of all children correctly diagnosed
+Sensitivity (Recall),99.25%,"[96.86%, 100.00%]",Autistic children correctly identified (low false negatives)
+Specificity,99.25%,"[97.17%, 100.00%]",Typical children correctly verified (low false alarms)
+Precision (PPV),99.25%,—,Reliability of a positive ASD diagnosis
+F1-Score,0.9925,—,Harmonic balance between Precision and Sensitivity
+ROC-AUC Score,0.9997,—,Class separation power across all confidence thresholds
+Average Precision (AP),0.9997,—,Area under Precision-Recall curve
+Cohen's Kappa,0.9850,—,Inter-rater reliability beyond chance agreement
