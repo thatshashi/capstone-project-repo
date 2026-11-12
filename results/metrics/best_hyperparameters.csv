@@ -1,2 +1,2 @@
-iterations,learning_rate,depth,l2_leaf_reg,random_strength,bagging_temperature,border_count,loss_function,eval_metric,random_seed,verbose,thread_count
-450,0.0366373096088456,7,1.2491751815165124,4.927101195679697,1.4829332610951664,32,Logloss,Accuracy,42,0,-1
+iterations,learning_rate,depth,l2_leaf_reg,loss_function,eval_metric,random_seed,verbose,thread_count,num_features,validation_protocol
+500,0.04,5,4.0,Logloss,Logloss,42,0,-1,86,5-Fold StratifiedGroupKFold (by subject_id)

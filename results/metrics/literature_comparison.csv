@@ -2,16 +2,16 @@ Study #,Reference,Method,Dataset Size,Reported Accuracy,Explainability
 1,Gait patterns in ASD review (2025),Systematic Review,17 studies (pediatric),N/A (Review),No
 2,Multisegment Foot Kinematic (2022),RBF-SVM,40 children (19 ASD + 21 TD),96.3%,No
 3,Altered Ankle Strategies (2022),Kinematic Statistical Analysis,14 ASD children,N/A (Analysis),No
-4,Lower Body Movement Kinect (2024),LDA + SVM / Decision Tree,30 children (15 ASD + 15 TD),96.7% - 100% (High leakage risk),No
+4,Lower Body Movement Kinect (2024),LDA + SVM / Decision Tree,30 children (15 ASD + 15 TD),96.7% - 100% (Supervised LDA leakage risk),No
 5,Age-related Gait Development (2021),Statistical Gait Analysis,29 ASD children,N/A (Statistics),No
-6,3D Kinect v2 Dataset Paper (2020),Dataset Description,100 children (50 ASD + 50 TD),N/A (Benchmark),No
-7,Autism Motor Signature Tablet (2016),Fine-motor gesture ML,ASD + TD tablet data,Unspecified ML,No
+6,3D Kinect v2 Dataset Paper (2020),Dataset Description,"100 children (50 ASD + 50 TD, 700 trials)",N/A (Benchmark),No
+7,Autism Motor Signature Tablet (2016),Fine-motor gesture ML,ASD + TD tablet cohort,Unspecified ML,No
 8,Videogame Whole-Body Kinematics (2019),Kinematics + ML,62 children (39 ASD + 23 TD),89.0%,No
-9,VR Body Movements (2020),VR Kinematics + ML,49 children (24 ASD + 25 TD),89.36%,No
+9,VR Body Movements (2020),VR Kinematics + ML,49 children (24 ASD + 25 TD),82.98% - 89.36%,No
 10,Tablet Trajectory Cognitive (2021),Supervised ML,60 children (30 ASD + 30 TD),93.0%,No
 11,Early ASD Detection Gait (2025),Logistic Reg / RF / XGBoost / SVM,61 children (32 ASD + 29 TD),82.0% (AUC 0.97),No
-12,Infant Video Tendencies (2022),Linear & Non-linear ML,Longitudinal Infant cohort,Correlation report,No
-13,Rough Set + PCA Augmentation (2021),Rough Set + PCA,100 children + augmentation,60.0% (raw) -> 92.0% (augmented),No
-14,Movement Signs Kinect (2024),AdaBoost / SVM / Naive Bayes (LOSO),100 children (50 ASD + 50 TD),87.0% (AdaBoost) / 84% (NB),No
-15,Interpersonal Coordination (2024),Motion Energy + Cross-Wavelet ML,43 children (20 ASD + 23 TD),92.68%,No
-Ours (Novel),mRMR-Guided CatBoost + Optuna HPO,CatBoost + mRMR + Bayesian HPO,800 samples (400 ASD + 400 TD),99.25% (AUC 1.000),Yes (SHAP Clinical Biomechanics)
+12,Infant Video Tendencies (2022),Linear & Non-linear ML,Longitudinal infant cohort,Correlation report,No
+13,Rough Set + PCA Augmentation (2021),Rough Set + PCA,100 children (700 augmented trials),60.0% (raw) -> 92.0% (augmented),No
+14,Movement Signs Kinect (2024),AdaBoost / SVM / Naive Bayes (LOSO),100 children (50 ASD + 50 TD),87.0% (AdaBoost) / 84.0% (NB),No
+15,Interpersonal Coordination (2024),Motion Energy + Cross-Wavelet ML,43 children (20 ASD + 23 TD),85.37% - 92.68%,No
+Ours (Leak-Free),Root-Centered Torso-Scaled 3D Kinematic CatBoost (5-Fold StratifiedGroupKFold),Tuned CatBoost (86 Normalized 3D Kinematic Biomarkers),100 unique children (50 ASD + 50 TD; 700 trials),"92.57% +/- 2.70% (Subject: 93.00%, AUROC: 0.9802)",Yes (Exact TreeSHAP Top-15 Motor Biomarkers)

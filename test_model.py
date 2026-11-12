@@ -3,8 +3,9 @@
 Standalone Inference & Evaluation Script for the Leak-Free ASD Kinematic Pipeline.
 
 Evaluates the saved CatBoost model (`results/models/catboost_asd_model.cbm`) on a tabular
-feature CSV (`data/processed_features.csv` or external test CSV) and prints predictions,
-subject-level diagnostic summaries, and TreeSHAP motor biomarker attributions.
+feature CSV (`data/processed_features.csv` or external test CSV), reports both the 5-Fold
+StratifiedGroupKFold out-of-fold generalization benchmark and full-cohort reference model
+inference, and displays TreeSHAP motor biomarker attributions.
 """
 
 from __future__ import annotations
@@ -69,19 +70,36 @@ def main() -> None:
     probs = model.predict_proba(X)[:, 1]
     preds = (probs >= 0.5).astype(int)
 
-    print("=" * 84)
-    print("  ASD 3D KINEMATIC CLASSIFICATION — MODEL INFERENCE VERIFICATION")
-    print("=" * 84)
-    print(f"  * Input Feature Matrix : {args.input} ({len(X)} trials, {len(feature_cols)} features)")
+    print("=" * 90)
+    print("  ASD 3D KINEMATIC CLASSIFICATION — MODEL INFERENCE & BENCHMARK VERIFICATION")
+    print("=" * 90)
+    print(f"  * Input Feature Matrix      : {args.input} ({len(X)} trials, {len(feature_cols)} features)")
     if subjects is not None:
-        print(f"  * Unique Subjects      : {subjects.nunique()}")
+        print(f"  * Unique Children (Groups)  : {subjects.nunique()} (7 trials/child)")
+
+    eval_csv = os.path.join("results", "metrics", "evaluation_metrics.csv")
+    if os.path.exists(eval_csv):
+        ev = pd.read_csv(eval_csv).iloc[0]
+        print(
+            f"  * 5-Fold GroupCV Benchmark  : Acc = {ev['accuracy_mean']*100:.2f}% +/- {ev['accuracy_std']*100:.2f}% "
+            f"(Subject Acc = {ev['subject_majority_vote_accuracy']*100:.2f}%)"
+        )
+        print(
+            f"  * 5-Fold GroupCV Discrimination : AUROC = {ev['roc_auc_mean']:.4f} +/- {ev['roc_auc_std']:.4f} | "
+            f"Sens = {ev['sensitivity_mean']*100:.2f}% | Spec = {ev['specificity_mean']*100:.2f}% | "
+            f"F1 = {ev['f1_mean']:.4f}"
+        )
+
     if y_true is not None:
         acc = accuracy_score(y_true, preds)
         auroc = roc_auc_score(y_true, probs)
         sens = recall_score(y_true, preds, pos_label=1)
         f1 = f1_score(y_true, preds, pos_label=1)
-        print(f"  * Reference Accuracy   : {acc * 100:.2f}% | AUROC: {auroc:.4f} | Sens: {sens * 100:.2f}% | F1: {f1:.4f}")
-    print("=" * 84)
+        print(
+            f"  * Full-Cohort Reference Fit : Acc = {acc * 100:.2f}% | AUROC = {auroc:.4f} | "
+            f"Sens = {sens * 100:.2f}% | F1 = {f1:.4f}"
+        )
+    print("=" * 90)
 
     if args.explain:
         explainer = shap.TreeExplainer(model)
@@ -89,13 +107,13 @@ def main() -> None:
         if isinstance(shap_vals, list):
             shap_vals = shap_vals[1]
         mean_abs = np.abs(shap_vals).mean(axis=0)
-        top_idx = np.argsort(mean_abs)[::-1][:10]
-        print("\n  Top 10 Motor Biomarkers:")
+        top_idx = np.argsort(mean_abs)[::-1][:15]
+        print("\n  Top 15 Motor Biomarkers (TreeSHAP Attribution):")
         for rank, idx in enumerate(top_idx, start=1):
             fname = feature_cols[idx]
-            print(f"    {rank:2d}. {fname:<40} (|SHAP| = {mean_abs[idx]:.4f})")
+            print(f"    {rank:2d}. {fname:<42} (Mean |SHAP| = {mean_abs[idx]:.4f})")
             print(f"        -> {translate_feature_to_clinical(fname)}")
-        print("=" * 84)
+        print("=" * 90)
 
 
 if __name__ == "__main__":

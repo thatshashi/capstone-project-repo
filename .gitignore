@@ -7,8 +7,11 @@ Dataset/Autism/
 Dataset/Typical/
 Dataset/Severe level of ASD/
 
-# Raw training datasets (only test datasets are pushed)
+# Raw / legacy spreadsheets & draft documents
 Final dataset*.xlsx
+data/unseen_blind_samples.xlsx
+data/unseen_test_samples.xlsx
+*.docx
 Research.md
 train_and_evaluate.py
 evaluate_and_plot.py
