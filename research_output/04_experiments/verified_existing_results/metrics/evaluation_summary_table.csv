@@ -1,0 +1,10 @@
+Metric Name,Score,95% Confidence Interval,Clinical Meaning
+"Overall Accuracy (Trial-Level, N=700)",92.57% +/- 2.70%,"[87.14%, 97.00%]",Proportion of all 700 gait trials correctly classified across 5 unseen-subject folds (648/700)
+"Subject-Level Accuracy (Majority Vote, N=100)",93.00% (93/100 children),"[87.14%, 97.00%]","Proportion of unique unseen children correctly diagnosed across 7 trials per child (TN=48, FP=2, FN=5, TP=45)"
+Sensitivity / ASD Recall,90.29% +/- 6.54%,"[81.55%, 97.48%]",ASD gait trials correctly identified on unseen children (TP=316/350 trials; 45/50 children)
+Specificity / TD Recall,94.86% +/- 5.31%,"[88.15%, 99.47%]",Typically Developing (TD) trials correctly verified without false alarms (TN=332/350 trials; 48/50 children)
+Precision (Positive Predictive Value),95.10% +/- 5.01% (OOF: 94.61%),"[87.74%, 99.45%]",Probability that a positive ASD screening prediction is a true positive (316/334 positive calls)
+F1-Score,0.9233 +/- 0.0296 (OOF: 0.9240),"[0.8620, 0.9687]",Harmonic balance between Precision (PPV) and Sensitivity (ASD Recall)
+ROC-AUC Score,0.9802 +/- 0.0251 (Subject: 0.9804),"[0.9526, 0.9967]",Non-parametric discriminative power across all decision thresholds on unseen children
+Average Precision (PR-AUC),0.9785 +/- 0.0284 (OOF: 0.9771),"[0.9433, 0.9970]",Area under the Precision-Recall curve across all sensitivity thresholds
+Cohen's Kappa (k) / MCC,k = 0.8514 +/- 0.0539 | MCC = 0.8523,"[0.7405, 0.9390]",Chance-corrected diagnostic concordance and balanced binary correlation

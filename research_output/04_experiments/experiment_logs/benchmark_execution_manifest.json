@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-11-14",
+  "random_seed": 42,
+  "datasets_audited": [
+    {
+      "path": "Final dataset.xlsx",
+      "rows": 800,
+      "cols": 1260,
+      "nominal_subjects": 100,
+      "trials_per_subject": 8,
+      "unique_coordinate_clusters": 88,
+      "unique_metadata_clusters": 87
+    },
+    {
+      "path": "data/processed_features.csv",
+      "rows": 700,
+      "cols": 89,
+      "features": 86,
+      "nominal_subjects": 100,
+      "trials_per_subject": 7
+    },
+    {
+      "path": "research_output/04_experiments/new_experiments/original_unaugmented_100_trials.csv",
+      "rows": 100,
+      "cols": 89,
+      "features": 86,
+      "unique_deduplicated_subjects": 88
+    }
+  ],
+  "regimes_evaluated": [
+    "R1_Naive_Ungrouped_SKF_700",
+    "R2_Nominal_100Subj_SGKF_700",
+    "R3A_Cluster87_SGKF_700",
+    "R3B_Deduplicated_88Subj_SGKF_616",
+    "R4A_Nominal_Original_100_SKF",
+    "R4B_Deduplicated_Original_88_SKF"
+  ]
+}

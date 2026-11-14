@@ -1,0 +1,2 @@
+iterations,learning_rate,depth,l2_leaf_reg,loss_function,eval_metric,random_seed,verbose,thread_count,num_features,validation_protocol
+500,0.04,5,4.0,Logloss,Logloss,42,0,-1,86,5-Fold StratifiedGroupKFold (by subject_id)
