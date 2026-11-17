@@ -1,16 +1,16 @@
 rank,feature_name,mean_abs_shap,clinical_interpretation
-1,norm_y_HipLeft_mean,1.987486,"Mean Normalized HipLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
-2,sagittal_knee_flexion_left_ang_vel_mean,0.693209,"Sagittal Left Knee Flexion (Angular Velocity Mean, deg/s) — Lower-limb sagittal flexion dynamics"
-3,cross_dist_left_wrist_right_ankle_mean,0.671938,Mean Contralateral Cross-Distance (Left Wrist to Right Ankle) — Distal diagonal inter-limb coordination
-4,elbow_right_rel_height_mean,0.668558,Mean Right Elbow Vertical Elevation relative to SpineBase — Forearm flexion/guarding posture
-5,wrist_right_rel_height_mean,0.57843,Mean Right Wrist Vertical Elevation relative to SpineBase — Upper-limb guarding posture
-6,norm_y_WristRight_std,0.529076,"Std Normalized WristRight Position along Y-Axis (SpineBase-centered, torso-scaled)"
-7,norm_z_ElbowLeft_mean,0.5219,"Mean Normalized ElbowLeft Position along Z-Axis (SpineBase-centered, torso-scaled)"
-8,step_dominant_rhythm_ratio,0.355966,Dominant Step Rhythm Ratio — Harmonic concentration of the fundamental stride frequency
-9,ankle_right_vel_z_std,0.338621,Right Ankle 1st-Order Sagittal Velocity (Std) — Distal swing progression variability
-10,sagittal_knee_flexion_right_mean,0.316386,"Sagittal Right Knee Flexion (Mean, deg) — Lower-limb sagittal flexion dynamics"
-11,cross_dist_right_wrist_left_ankle_mean,0.316218,Mean Contralateral Cross-Distance (Right Wrist to Left Ankle) — Distal diagonal inter-limb coordination
-12,cross_dist_left_elbow_right_foot_mean,0.261789,Mean Contralateral Cross-Distance (Left Elbow to Right Foot) — Diagonal inter-limb coordination
-13,arm_swing_sagittal_asymmetry,0.246444,Sagittal Arm Swing Asymmetry Index — Anterior-posterior reciprocal arm swing imbalance
-14,shoulder_angle_right_mean,0.185781,Mean Right Shoulder Abduction/Flexion Angle (deg) — Upper-arm postural abduction
-15,step_spectral_irregularity,0.185693,Step Spectral Entropy — Frequency-domain irregularity of lower-limb gait periodicity
+1,whole_body_contralateral_axial_index,2.649951,Whole-Body Contralateral & Axial Kinematic Coupling Index — Integrated diagonal limb & pelvic-axial synergy
+2,bilateral_postural_integration_index,1.595071,"Bilateral Postural & Pelvic-Limb Integration Index — Coupled pelvic tilt, shoulder obliquity & arm guarding"
+3,dy_FootLeft_AnkleLeft_std,0.54278,Left Foot-to-Ankle Vertical Oscillation Std (Torso Units) — Left ankle dorsiflexion/plantarflexion compliance
+4,dxiso_AnkleRight_KneeRight_max,0.404255,Max Isotropic Coronal Right Ankle-to-Knee Offset (Torso Units) — Dynamic lower-limb tibial valgus excursion
+5,diagonal_pelvic_hand_ankle_synergy_index,0.301317,Diagonal Pelvic-Hand-Ankle Synergy Index — Contralateral wrist-ankle & distal hand-ankle coordination
+6,norm_y_WristRight_std,0.267875,"Std Normalized WristRight Position along Y-Axis (SpineBase-centered, torso-scaled)"
+7,dxiso_ElbowLeft_ElbowRight_min,0.259981,Peak Isotropic Coronal Inter-Elbow Expansion (Torso Units) — Maximum bilateral elbow guarding span
+8,cross_dist_left_wrist_right_ankle_mean,0.189359,Mean Contralateral Cross-Distance (Left Wrist to Right Ankle) — Distal diagonal inter-limb coordination
+9,cross_dist_left_wrist_right_ankle_min,0.181263,Min Contralateral Cross-Distance (Left Wrist to Right Ankle) — Minimum distal diagonal limb separation
+10,norm_y_HipLeft_mean,0.17211,"Mean Normalized HipLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
+11,dy_HandTipRight_ThumbRight_mean,0.170223,Mean Right HandTip-to-Thumb Vertical Offset (Torso Units) — Distal right hand/finger extension posture
+12,norm_y_FootLeft_mean,0.163666,"Mean Normalized FootLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
+13,upper_limb_3d_guarding_retraction_index,0.149125,Upper-Limb 3D Guarding & Elbow Retraction Index — Bilateral coronal elbow span & high-guard posture
+14,norm_z_ElbowRight_mean,0.140767,"Mean Normalized ElbowRight Position along Z-Axis (SpineBase-centered, torso-scaled)"
+15,step_spectral_irregularity,0.137421,Step Spectral Entropy — Frequency-domain irregularity of lower-limb gait periodicity

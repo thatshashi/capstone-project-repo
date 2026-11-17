@@ -1,21 +1,21 @@
 Rank,Feature Name,Mean |SHAP| Value,TD Mean +/- SD,ASD Mean +/- SD,Cohen's d (ASD vs TD),Mann-Whitney p-value,Clinical & Biomechanical Interpretation
-1,norm_y_HipLeft_mean,1.9875,0.0190 +/- 0.0077,0.0092 +/- 0.0051,-1.501,3.39e-57,"Mean Normalized HipLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
-2,sagittal_knee_flexion_left_ang_vel_mean,0.6932,308.8592 +/- 257.2671,235.5769 +/- 248.4256,-0.29,3.19e-34,"Sagittal Left Knee Flexion (Angular Velocity Mean, deg/s) — Lower-limb sagittal flexion dynamics"
-3,cross_dist_left_wrist_right_ankle_mean,0.6719,1.2269 +/- 0.1388,1.7118 +/- 0.4335,1.507,3.82e-70,Mean Contralateral Cross-Distance (Left Wrist to Right Ankle) — Distal diagonal inter-limb coordination
-4,elbow_right_rel_height_mean,0.6686,0.4582 +/- 0.0496,0.6101 +/- 0.2026,1.03,1.68e-35,Mean Right Elbow Vertical Elevation relative to SpineBase — Forearm flexion/guarding posture
-5,wrist_right_rel_height_mean,0.5784,0.0883 +/- 0.0987,0.4965 +/- 0.4499,1.254,7.30e-34,Mean Right Wrist Vertical Elevation relative to SpineBase — Upper-limb guarding posture
-6,norm_y_WristRight_std,0.5291,0.0609 +/- 0.0479,0.1346 +/- 0.1440,0.687,4.68e-06,"Std Normalized WristRight Position along Y-Axis (SpineBase-centered, torso-scaled)"
-7,norm_z_ElbowLeft_mean,0.5219,-0.0372 +/- 0.0971,-0.1375 +/- 0.1334,-0.859,1.89e-28,"Mean Normalized ElbowLeft Position along Z-Axis (SpineBase-centered, torso-scaled)"
-8,step_dominant_rhythm_ratio,0.356,0.7662 +/- 0.1563,0.6672 +/- 0.2021,-0.548,1.99e-12,Dominant Step Rhythm Ratio — Harmonic concentration of the fundamental stride frequency
-9,ankle_right_vel_z_std,0.3386,3.7245 +/- 2.9810,3.4356 +/- 3.2180,-0.093,1.06e-13,Right Ankle 1st-Order Sagittal Velocity (Std) — Distal swing progression variability
-10,sagittal_knee_flexion_right_mean,0.3164,154.2047 +/- 10.0197,160.3684 +/- 8.2771,0.671,5.22e-28,"Sagittal Right Knee Flexion (Mean, deg) — Lower-limb sagittal flexion dynamics"
-11,cross_dist_right_wrist_left_ankle_mean,0.3162,1.2528 +/- 0.1211,1.7359 +/- 0.4316,1.524,9.18e-67,Mean Contralateral Cross-Distance (Right Wrist to Left Ankle) — Distal diagonal inter-limb coordination
-12,cross_dist_left_elbow_right_foot_mean,0.2618,1.6224 +/- 0.1347,1.8842 +/- 0.2479,1.312,3.19e-57,Mean Contralateral Cross-Distance (Left Elbow to Right Foot) — Diagonal inter-limb coordination
-13,arm_swing_sagittal_asymmetry,0.2464,0.5456 +/- 0.3557,0.3184 +/- 0.3188,-0.673,1.20e-19,Sagittal Arm Swing Asymmetry Index — Anterior-posterior reciprocal arm swing imbalance
-14,shoulder_angle_right_mean,0.1858,113.5736 +/- 7.6630,126.7617 +/- 15.9422,1.054,2.18e-39,Mean Right Shoulder Abduction/Flexion Angle (deg) — Upper-arm postural abduction
-15,step_spectral_irregularity,0.1857,0.8864 +/- 0.4851,1.0689 +/- 0.5419,0.355,2.93e-09,Step Spectral Entropy — Frequency-domain irregularity of lower-limb gait periodicity
-16,norm_y_FootLeft_mean,0.1856,-1.0251 +/- 0.1189,-1.1354 +/- 0.0933,-1.032,5.72e-33,"Mean Normalized FootLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
-17,trunk_sagittal_lean_mean,0.1732,-0.0090 +/- 3.8681,-1.7316 +/- 3.6654,-0.457,1.41e-05,Mean Sagittal Trunk Lean Angle (deg) — Forward/backward torso flexion angle
-18,sagittal_hip_angle_right_ang_vel_mean,0.1453,238.1395 +/- 206.4194,194.1847 +/- 203.9147,-0.214,3.38e-23,"Sagittal Right Hip Angle (Angular Velocity Mean, deg/s) — Pelvic-femoral sagittal flexion/extension"
-19,norm_z_ElbowRight_mean,0.1303,0.0070 +/- 0.0678,-0.0921 +/- 0.1208,-1.011,1.27e-30,"Mean Normalized ElbowRight Position along Z-Axis (SpineBase-centered, torso-scaled)"
-20,cross_dist_right_elbow_left_foot_mean,0.1092,1.6433 +/- 0.1177,1.8896 +/- 0.2431,1.29,3.00e-57,Mean Contralateral Cross-Distance (Right Elbow to Left Foot) — Diagonal inter-limb coordination
+1,whole_body_contralateral_axial_index,2.65,40.5949 +/- 5.2965,55.7359 +/- 8.1925,2.195,1.98e-96,Whole-Body Contralateral & Axial Kinematic Coupling Index — Integrated diagonal limb & pelvic-axial synergy
+2,bilateral_postural_integration_index,1.5951,5.8655 +/- 3.2657,14.9220 +/- 5.4271,2.022,7.15e-93,"Bilateral Postural & Pelvic-Limb Integration Index — Coupled pelvic tilt, shoulder obliquity & arm guarding"
+3,dy_FootLeft_AnkleLeft_std,0.5428,0.0605 +/- 0.0265,0.0430 +/- 0.0300,-0.621,9.77e-38,Left Foot-to-Ankle Vertical Oscillation Std (Torso Units) — Left ankle dorsiflexion/plantarflexion compliance
+4,dxiso_AnkleRight_KneeRight_max,0.4043,0.0343 +/- 0.0317,0.0833 +/- 0.0502,1.167,1.26e-50,Max Isotropic Coronal Right Ankle-to-Knee Offset (Torso Units) — Dynamic lower-limb tibial valgus excursion
+5,diagonal_pelvic_hand_ankle_synergy_index,0.3013,17.4713 +/- 2.5818,24.5317 +/- 5.3027,1.693,2.01e-80,Diagonal Pelvic-Hand-Ankle Synergy Index — Contralateral wrist-ankle & distal hand-ankle coordination
+6,norm_y_WristRight_std,0.2679,0.0609 +/- 0.0479,0.1346 +/- 0.1440,0.687,4.68e-06,"Std Normalized WristRight Position along Y-Axis (SpineBase-centered, torso-scaled)"
+7,dxiso_ElbowLeft_ElbowRight_min,0.26,-0.8173 +/- 0.0834,-1.0743 +/- 0.2551,-1.355,1.53e-56,Peak Isotropic Coronal Inter-Elbow Expansion (Torso Units) — Maximum bilateral elbow guarding span
+8,cross_dist_left_wrist_right_ankle_mean,0.1894,1.2269 +/- 0.1388,1.7118 +/- 0.4335,1.507,3.82e-70,Mean Contralateral Cross-Distance (Left Wrist to Right Ankle) — Distal diagonal inter-limb coordination
+9,cross_dist_left_wrist_right_ankle_min,0.1813,1.0642 +/- 0.1486,1.4279 +/- 0.3936,1.223,5.51e-53,Min Contralateral Cross-Distance (Left Wrist to Right Ankle) — Minimum distal diagonal limb separation
+10,norm_y_HipLeft_mean,0.1721,0.0190 +/- 0.0077,0.0092 +/- 0.0051,-1.501,3.39e-57,"Mean Normalized HipLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
+11,dy_HandTipRight_ThumbRight_mean,0.1702,-0.0897 +/- 0.0388,-0.0265 +/- 0.0716,1.098,5.01e-38,Mean Right HandTip-to-Thumb Vertical Offset (Torso Units) — Distal right hand/finger extension posture
+12,norm_y_FootLeft_mean,0.1637,-1.0251 +/- 0.1189,-1.1354 +/- 0.0933,-1.032,5.72e-33,"Mean Normalized FootLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
+13,upper_limb_3d_guarding_retraction_index,0.1491,21.9011 +/- 1.9337,29.9520 +/- 7.8745,1.404,2.24e-73,Upper-Limb 3D Guarding & Elbow Retraction Index — Bilateral coronal elbow span & high-guard posture
+14,norm_z_ElbowRight_mean,0.1408,0.0070 +/- 0.0678,-0.0921 +/- 0.1208,-1.011,1.27e-30,"Mean Normalized ElbowRight Position along Z-Axis (SpineBase-centered, torso-scaled)"
+15,step_spectral_irregularity,0.1374,0.8864 +/- 0.4851,1.0689 +/- 0.5419,0.355,2.93e-09,Step Spectral Entropy — Frequency-domain irregularity of lower-limb gait periodicity
+16,norm_y_WristLeft_std,0.1169,0.0634 +/- 0.0512,0.1179 +/- 0.1354,0.533,4.98e-03,"Std Normalized WristLeft Position along Y-Axis (SpineBase-centered, torso-scaled)"
+17,arm_swing_sagittal_asymmetry,0.1106,0.5456 +/- 0.3557,0.3184 +/- 0.3188,-0.673,1.20e-19,Sagittal Arm Swing Asymmetry Index — Anterior-posterior reciprocal arm swing imbalance
+18,dxiso_HandTipLeft_HandTipRight_min,0.1073,-0.8971 +/- 0.1896,-1.2151 +/- 0.5983,-0.717,1.80e-26,Peak Isotropic Coronal Inter-HandTip Separation (Torso Units) — Distal bilateral finger splay
+19,dxiso_ElbowLeft_ElbowRight_mean,0.107,-0.7525 +/- 0.0771,-0.9424 +/- 0.2053,-1.225,9.58e-50,Mean Isotropic Coronal Inter-Elbow Span (Torso Units) — Bilateral upper-arm abduction width
+20,cross_dist_left_elbow_right_foot_mean,0.1066,1.6224 +/- 0.1347,1.8842 +/- 0.2479,1.312,3.19e-57,Mean Contralateral Cross-Distance (Left Elbow to Right Foot) — Diagonal inter-limb coordination

@@ -426,36 +426,39 @@ def _save_all_metric_tables_and_metadata(
     eval_metrics_df.to_csv(os.path.join("results", "metrics", "evaluation_metrics.csv"), index=False)
 
     # 4. Save results/metrics/evaluation_summary_table.csv
+    n_correct_trials = cb_res["oof_tn"] + cb_res["oof_tp"]
+    n_correct_subjs = cb_res["subj_tn"] + cb_res["subj_tp"]
+    n_pos_calls = cb_res["oof_tp"] + cb_res["oof_fp"]
     eval_summary_rows = [
         {
             "Metric Name": "Overall Accuracy (Trial-Level, N=700)",
             "Score": f"{cb_res['accuracy_mean'] * 100:.2f}% +/- {cb_res['accuracy_std'] * 100:.2f}%",
             "95% Confidence Interval": f"[{ci['accuracy'][0] * 100:.2f}%, {ci['accuracy'][1] * 100:.2f}%]",
-            "Clinical Meaning": "Proportion of all 700 gait trials correctly classified across 5 unseen-subject folds (648/700)",
+            "Clinical Meaning": f"Proportion of all 700 gait trials correctly classified across 5 unseen-subject folds ({n_correct_trials}/700)",
         },
         {
             "Metric Name": "Subject-Level Accuracy (Majority Vote, N=100)",
-            "Score": f"{cb_res['subj_maj_accuracy'] * 100:.2f}% (93/100 children)",
+            "Score": f"{cb_res['subj_maj_accuracy'] * 100:.2f}% ({n_correct_subjs}/100 children)",
             "95% Confidence Interval": f"[{ci['accuracy'][0] * 100:.2f}%, {ci['accuracy'][1] * 100:.2f}%]",
-            "Clinical Meaning": "Proportion of unique unseen children correctly diagnosed across 7 trials per child (TN=48, FP=2, FN=5, TP=45)",
+            "Clinical Meaning": f"Proportion of unique unseen children correctly diagnosed across 7 trials per child (TN={cb_res['subj_tn']}, FP={cb_res['subj_fp']}, FN={cb_res['subj_fn']}, TP={cb_res['subj_tp']})",
         },
         {
             "Metric Name": "Sensitivity / ASD Recall",
             "Score": f"{cb_res['sensitivity_mean'] * 100:.2f}% +/- {cb_res['sensitivity_std'] * 100:.2f}%",
             "95% Confidence Interval": f"[{ci['sensitivity'][0] * 100:.2f}%, {ci['sensitivity'][1] * 100:.2f}%]",
-            "Clinical Meaning": "ASD gait trials correctly identified on unseen children (TP=316/350 trials; 45/50 children)",
+            "Clinical Meaning": f"ASD gait trials correctly identified on unseen children (TP={cb_res['oof_tp']}/350 trials; {cb_res['subj_tp']}/50 children)",
         },
         {
             "Metric Name": "Specificity / TD Recall",
             "Score": f"{cb_res['specificity_mean'] * 100:.2f}% +/- {cb_res['specificity_std'] * 100:.2f}%",
             "95% Confidence Interval": f"[{ci['specificity'][0] * 100:.2f}%, {ci['specificity'][1] * 100:.2f}%]",
-            "Clinical Meaning": "Typically Developing (TD) trials correctly verified without false alarms (TN=332/350 trials; 48/50 children)",
+            "Clinical Meaning": f"Typically Developing (TD) trials correctly verified without false alarms (TN={cb_res['oof_tn']}/350 trials; {cb_res['subj_tn']}/50 children)",
         },
         {
             "Metric Name": "Precision (Positive Predictive Value)",
             "Score": f"{cb_res['precision_mean'] * 100:.2f}% +/- {cb_res['precision_std'] * 100:.2f}% (OOF: {cb_res['oof_precision'] * 100:.2f}%)",
             "95% Confidence Interval": f"[{ci['precision'][0] * 100:.2f}%, {ci['precision'][1] * 100:.2f}%]",
-            "Clinical Meaning": "Probability that a positive ASD screening prediction is a true positive (316/334 positive calls)",
+            "Clinical Meaning": f"Probability that a positive ASD screening prediction is a true positive ({cb_res['oof_tp']}/{n_pos_calls} positive calls)",
         },
         {
             "Metric Name": "F1-Score",

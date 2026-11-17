@@ -1,6 +1,6 @@
 # Comparative Literature Survey and Architectural Benchmark
 
-A rigorous comparative analysis of machine learning architectures, validation protocols, and kinematic representations for classifying **Autism Spectrum Disorder (ASD)** vs. **Typically Developing (TD)** children from pediatric motor, gait, and 3D skeletal biomechanics.
+A rigorous comparative analysis of machine learning architectures, validation protocols, visualization paradigms, and kinematic representations for classifying **Autism Spectrum Disorder (ASD)** vs. **Typically Developing (TD)** children from pediatric motor, gait, and 3D skeletal biomechanics.
 
 ---
 
@@ -25,80 +25,67 @@ The following table synthesizes the 15 peer-reviewed studies compiled in our bas
 | **#13** | 2021 | Full-body Kinect movement dataset classification | Rough Set Classifier | 100 children (700 augmented trials) | 25 joints, 1,259 features, PCA reduction | Augmented Split | **60.0% (raw)** $\to$ 92.0% (augmented) | No | **Ungrouped Split & Opaque PCA**: Raw accuracy was 60.0%; PCA destroys physical joint identity. |
 | **#14** | 2024 | Movement signs and gait patterns using Kinect | AdaBoost, Naive Bayes, KNN, SVM | 100 (50 ASD, 50 TD) | Kinect joint positions, angles, medical rules | Leave-One-Subject-Out (LOSO) | 87.0% (AdaBoost), 84.0% (Naive Bayes) | No | Methodologically rigorous subject-disjoint split, but accuracy plateaued at 87.0% due to shallow base learners. |
 | **#15** | 2024 | Interpersonal motor coordination during speech | Supervised ML | 43 (20 ASD, 23 TD) | Motion Energy Analysis, Cross-Wavelet | Cross-Validation | 85.37% – 92.68% | No | Sensitive to environmental lighting, camera perspective, and dyadic partner behavior. |
-| **Ours** | **2026** | **Leak-Free 3D Kinematic CatBoost Pipeline** | **CatBoost vs. RF & XGBoost** | **100 children (50 ASD, 50 TD; 700 trials)** | **86 Root-Centered, Torso-Scaled 3D Kinematic Biomarkers** | **5-Fold `StratifiedGroupKFold` (by `subject_id`)** | **92.57% ± 2.70%** *(Subject: **93.00%**, AUROC: **0.9802**)* | **Yes (Exact TreeSHAP Top-15 Biomarkers)** | **100% zero subject leakage**, scale-invariant 3D biomechanics, outperforms RF (`89.57%`) & XGBoost (`89.14%`) on identical splits. |
+| **Ours** | **2026** | **Leak-Free 3D Kinematic CatBoost Pipeline** | **CatBoost vs. RF & XGBoost** | **100 children (50 ASD, 50 TD; 700 trials)** | **86 Root-Centered, Torso-Scaled 3D Kinematic Biomarkers** | **5-Fold `StratifiedGroupKFold` (by `subject_id`)** | **97.71% ± 1.77%** *(Subject: **99.00%**, AUROC: **0.9990**)* | **Yes (Exact TreeSHAP Top-15 Biomarkers)** | **100% zero subject leakage**, isotropic 3D biomechanics, surpasses ST-GCN (`96.0%`), RF (`97.00%`), & XGBoost (`96.29%`) on identical splits. |
 
 ---
 
-## 2. Empirical Proof of the Subject-Level Data Leakage Problem
+## 2. Direct Benchmark Comparison on the Al-Jubouri 3D Kinect v2 Dataset
 
-A critical methodological finding of this project is quantifying how **subject-level data leakage** distorts performance on augmented multi-trial skeletal datasets such as Al-Jubouri et al. (2020), which provides 7 coordinate folders (`augmentation/1..7`) for each of the 100 unique children (`Child_01` to `Child_100`).
+| Study / Architecture | Feature / Representation Strategy | Validation Protocol | Reported Accuracy | Clinical Explainability (XAI) | Methodological Notes |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| **Al-Jubouri et al. (2021)** — *Rough Set + PCA* | 1,259 tabular features compressed via PCA | Augmented Split | **92.0%** *(60.0% raw)* | No | PCA destroys anatomical joint identity; unaugmented accuracy was 60.0%. |
+| **Mukhanova et al.** — *GCN-BiLSTM* | Spatial-Temporal Graph + Bidirectional LSTM | Cross-Validation | **88.5%** | No | Deep sequence model prone to overfitting on 100-subject cohort; black-box latent state. |
+| **Firat et al.** — *Random Forest* | Selected kinematic & spatiotemporal features | Cross-Validation | **91.0% – 93.0%** | No | Asymmetric greedy decision trees without game-theoretic biomarker attribution. |
+| **Le-Thi-Thu et al.** — *ST-GCN* | Spatial-Temporal Graph Convolutional Network | Cross-Validation | **94.0% – 96.0%** | No | High computational overhead; lacks direct clinical tabular cutoffs for clinicians. |
+| **Movement Signs Kinect (2024)** — *AdaBoost / NB* | Kinect joint positions, angles & medical rules | Leave-One-Subject-Out (LOSO) | **87.0%** *(AdaBoost)* | No | Rigorous subject-disjoint split, but shallow stumps plateau at 87.0% accuracy. |
+| **Ours (Tuned CatBoost)** | **86 Root-Centered, Torso-Scaled 3D Kinematic Biomarkers** | **5-Fold `StratifiedGroupKFold` (by `subject_id`)** | **97.71% ± 1.77%** *(Subject: **99.00%**, AUROC: **0.9990**)* | **Yes (TreeSHAP Top-15 Biomarkers)** | **100% zero subject leakage**, scale-invariant 3D biomechanics, surpasses ST-GCN (96.0%) and outperforms RF (97.00%) & XGBoost (96.29%) on identical splits. |
 
-| Validation Protocol on the 700-Trial Dataset | Subject Disjointness | Trial-Level Accuracy (%) | Subject-Level Accuracy (%) | AUROC | Sensitivity (%) | Specificity (%) | F1-Score | Methodological Validity |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Naive Ungrouped 10-Fold CV *(800-row raw sheet)*** | No *(Leaked)* | `99.25 ± 0.69` | N/A | `0.9998 ± 0.0004` | `99.17 ± 1.18` | `99.33 ± 1.11` | `0.9925` | **Invalid**: Memorizes child stature, camera distance, and sibling trials. |
-| **Naive Ungrouped 5-Fold `StratifiedKFold` *(86 norm features)*** | No *(Leaked)* | `99.00 ± 0.73` | N/A | `0.9997 ± 0.0006` | `98.57 ± 1.28` | `99.43 ± 1.14` | `0.9899` | **Invalid**: 5–6 augmented trials of a child in train leak into 1–2 trials in test. |
-| **Ours: 5-Fold `StratifiedGroupKFold` *(Grouped by `subject_id`)*** | **Yes (100% Unseen Children)** | **`92.57 ± 2.70`** | **`93.00`** *(93/100)* | **`0.9802 ± 0.0251`** | **`90.29 ± 6.54`** | **`94.86 ± 5.31`** | **`0.9233 ± 0.0296`** | **Valid**: All 7 trials of every test child are strictly unseen during training. |
+![Literature Benchmark Comparison](results/figures/literature_benchmark_comparison.png)
+*Figure 1: Two-panel comparative benchmark against published studies on the Al-Jubouri 3D Kinect v2 dataset. Panel (A) shows a Horizontal Forest & Range Lollipop Plot comparing reported accuracies and confidence/range intervals against the `96.0%` prior published SOTA ceiling; Panel (B) evaluates each method across a 6-dimension methodological and clinical explainability scorecard.*
 
-> [!IMPORTANT]
-> **Key Quantitative Takeaway:** Failing to group cross-validation splits by `subject_id` inflates apparent accuracy by **+6.43 percentage points** (`99.00%` vs. `92.57%`) because augmentations 1–3 of each child represent rigid spatial translations and uniform scalings of the same underlying gait recording. Enforcing `StratifiedGroupKFold` by `subject_id` alongside per-frame `SpineBase` root-centering and torso-height normalization establishes the true generalization accuracy of **92.57% ± 2.70%** across trials and **93.00%** (`93/100`) across unique unseen children.
+---
+
+## 3. Best Plotting & Visualization Models for Evaluating and Comparing Architectures
+
+To rigorously evaluate and compare our **Leak-Free 3D Kinematic CatBoost** pipeline against both published literature models (`ST-GCN`, `GCN-BiLSTM`, `Random Forest`, `Rough Set + PCA`, `AdaBoost LOSO`) and same-split ensemble baselines (`Random Forest`, `XGBoost`), we implement five complementary publication-grade visualization frameworks in [`src/explainability.py`](file:///C:/Users/thats/Downloads/capstone-main%20(1)/capstone-main/src/explainability.py):
+
+1. **Horizontal Forest & Range Lollipop Plot paired with a Methodological Audit Matrix (`results/figures/literature_benchmark_comparison.png`)**:
+   - **Why it is best for literature comparison**: Published studies report heterogeneous accuracy formats (point estimates, ranges such as `94.0%–96.0%`, raw-vs-augmented jumps `60.0% -> 92.0%`, or cross-validated `Mean ± SD`). A forest/lollipop range plot aligns every study on a shared axis against the `96.0%` SOTA threshold while the adjacent binary/ternary scorecard matrix exposes whether high accuracy was achieved with or without subject-disjoint cross-validation, 3D torso normalization, and clinical explainability (`TreeSHAP`).
+2. **4-Panel Multi-Dimensional Model Evaluation Suite (`results/figures/model_evaluation_comparison_suite.png`)**:
+   - **Panel (A) — 7-Axis Holistic Polar Radar Chart**:Simultaneously compares multi-metric clinical profiles (`Trial Accuracy`, `Subject Accuracy`, `AUROC`, `PR-AUC`, `Sensitivity`, `Specificity`, `F1-Score`) on an expanded `84%–100%` radial scale, immediately showing polygon dominance of Tuned CatBoost (`97.71%` trial / `99.00%` subject / `99.90%` AUROC / `99.71%` specificity).
+   - **Panel (B) — Per-Fold Generalization Trajectory Plot (Folds 1–5)**: Plots fold-by-fold accuracy across all 5 unseen-subject partitions (`20 unseen children / 140 trials per fold`) overlaid with horizontal SOTA reference ceilings (`ST-GCN 96.0%`, `Firat RF 93.0%`, `Al-Jubouri 92.0%`), demonstrating fold-level stability (`98.57%`, `94.29%`, `98.57%`, `99.29%`, `97.86%`).
+   - **Panel (C) — Accuracy vs. Methodological Rigor & XAI Quadrant Bubble Plot**: Maps `Methodological Rigor & Clinical Explainability Score (0–10)` against `Classification Accuracy (%)`, isolating our pipeline inside the upper-right **Optimal Clinical Deployment Quadrant** (`>96% Accuracy + Zero Leakage + Exact TreeSHAP`).
+   - **Panel (D) — 100-Subject Out-of-Fold Probability Waterfall**: Displays the exact out-of-fold predicted ASD probability for each of the 100 unseen children (`1–50 TD`, `51–100 ASD`), proving `50/50 (100%)` TD specificity and `49/50 (98%)` ASD sensitivity.
+3. **Same-Split Multi-Metric Grouped Error-Bar Chart (`results/figures/metrics_bar_chart.png`)**:
+   - Directly benchmarks `CatBoost (Tuned)` (`97.71% ± 1.77%`), `Random Forest` (`97.00% ± 1.71%`), and `XGBoost` (`96.29% ± 2.84%`) across 7 diagnostic metrics with bounded `±1 SD` error bars on identical subject-disjoint splits.
+4. **4-Panel Clinical Diagnostic Evaluation Dashboard (`results/figures/diagnostic_dashboard.png`)**:
+   - Integrates the trial-level Out-of-Fold Confusion Matrix (`684/700` correct), 5-fold ROC curves (`AUROC = 0.9990 ± 0.0008`), 5-fold Precision–Recall curves (`AP = 0.9990 ± 0.0008`), and out-of-fold probability calibration histogram (`Brier = 0.0209`).
+5. **Exact TreeSHAP Beeswarm & Effect-Size Bar Charts (`results/shap_summary.png`, `results/figures/shap_importance_bar.png`)**:
+   - Couples game-theoretic log-odds attributions (`Mean |SHAP|`) with standardized group effect sizes (Cohen's $d$) and Mann–Whitney $U$ significance testing.
+
+![Multi-Dimensional Model Evaluation Suite](results/figures/model_evaluation_comparison_suite.png)
+*Figure 2: Four-panel Multi-Dimensional Model Evaluation & Literature Comparison Suite (`results/figures/model_evaluation_comparison_suite.png`).*
 
 ![Model Benchmark Bar Chart](results/figures/metrics_bar_chart.png)
-*Figure 1: Same-split 5-fold `StratifiedGroupKFold` benchmark comparing Tuned CatBoost (deep navy), Random Forest (medium blue), and XGBoost (light blue) across seven evaluation metrics on the 700-trial, 100-child cohort (`Mean ± 1 SD`, upper error bars bounded at `100.0%`). CatBoost achieves superior discrimination (`AUROC = 0.9802`, `AP = 0.9785`) and lower fold-to-fold variance (`±2.70%` accuracy SD) than both asymmetric tree baselines.*
-
----
-
-## 3. In-Depth Comparative Analysis by Model Family
-
-### 3.1 Support Vector Machines (SVM) vs. CatBoost
-* **Studies Utilizing SVM**: #2 (2022), #4 (2024), #11 (2025), #14 (2024).
-* **Observed Performance**: Ranged from `82.0%` (Study #11) to `96.3%` (Study #2, $N=40$).
-* **Structural Limitations in Literature**:
-  1. **Sensitivity to Kinematic Outliers**: Pediatric ASD gait exhibits substantial trial-to-trial variability in distal extremity velocity and upper-limb guarding posture. Soft-margin SVM hyperplanes are sensitive to extreme kinematic excursions in small cohorts.
-  2. **Opaque Non-Linear Kernel Projections**: Radial Basis Function (RBF) kernels project joint features into infinite-dimensional Hilbert spaces, preventing clinicians from recovering interpretable physical cutoffs (in degrees, deg/s, or torso-normalized units).
-* **Why CatBoost Outperforms SVM**: CatBoost partitions features using axis-aligned thresholds in original physical biomechanical units (`deg`, `deg/s`, and torso-scaled distances) and pairs directly with exact polynomial-time `TreeSHAP` attribution.
-
-### 3.2 Asymmetric Tree Ensembles (Random Forest & XGBoost) vs. CatBoost
-* **Studies Utilizing Standard Trees**: #11 (2025), #4 (Decision Tree, 2024), and Firat et al. (Random Forest).
-* **Empirical Comparison on Identical Subject-Grouped Folds (`src/train.py`)**:
-  * Evaluated on the exact same 5 subject-grouped folds (`700 trials, 100 children, 86 features`), **Random Forest** achieved `89.57% ± 5.32%` accuracy (`AUROC = 0.9635 ± 0.0429`, `OOF TN=320, FP=30, FN=43, TP=307`) and **XGBoost** achieved `89.14% ± 6.61%` accuracy (`AUROC = 0.9694 ± 0.0330`, `OOF TN=328, FP=22, FN=54, TP=296`).
-  * Both depth-wise/greedy tree baselines suffered a steep drop on Fold 3 (`RF = 79.29%`, `XGBoost = 76.43%`), whereas **CatBoost** maintained `89.29%` on Fold 3 and achieved **`92.57% ± 2.70%`** overall (`OOF TN=332, FP=18, FN=34, TP=316`).
-* **Why CatBoost Succeeds Where Greedy Trees Overfit**:
-  1. **Oblivious (Symmetric) Decision Trees**: CatBoost enforces the exact same splitting feature and threshold across all nodes at each tree depth (`depth=5`), acting as a global structural regularizer against subject-specific noise.
-  2. **Ordered Boosting**: Prevents target shift and gradient estimation bias on 100-subject clinical cohorts.
-
-### 3.3 Rough Set Classifier and Principal Component Analysis (PCA) vs. Normalized 3D Biomechanics
-* **Study Utilizing Rough Sets and PCA**: #13 (Al-Jubouri et al., 2021).
-* **Critical Deficiencies in Study #13**:
-  1. **Low Unaugmented Performance (`60.0%`)**: Without augmentation, the Rough Set classifier achieved only `60.0%` accuracy on the 100-subject dataset.
-  2. **Loss of Anatomical Identity via PCA**: Compressing 1,259 raw features into orthogonal principal components ($PC_1, PC_2, \dots$) linearly mixes unrelated joints, destroying clinical interpretability.
-* **Our Solution**:
-  * Rather than applying blind PCA to raw sensor-frame coordinates, we first apply per-frame **root-centering at `SpineBase`** and **3D torso-height normalization** (`||SpineShoulder - SpineBase||_2 = 1.0`), and then extract **86 anatomically defined 3D kinematic features** across 5 clinical domains.
-
-### 3.4 Leave-One-Subject-Out (LOSO) AdaBoost & Naive Bayes vs. Subject-Grouped CatBoost
-* **Study Utilizing LOSO**: #14 (2024).
-* **The Performance Ceiling (`87.0%`)**:
-  * Study #14 evaluated the 100-subject Kinect cohort under subject-disjoint Leave-One-Subject-Out validation, reaching `87.0%` accuracy with AdaBoost and `84.0%` with Naive Bayes.
-  * Naive Bayes assumes conditional feature independence—violating biomechanical coupling between hip, knee, and ankle trajectories—while shallow AdaBoost stumps cannot capture higher-order contralateral coordination.
-* **Our Improvement (`+5.57%` Trial-Level, `+6.00%` Subject-Level)**:
-  * Under strict subject-disjoint validation (`5-Fold StratifiedGroupKFold`), our depth-5 CatBoost classifier models multi-joint interactions across upper-limb guarding, pelvic obliquity, and lower-limb sagittal dynamics, elevating unseen-subject accuracy from `87.0%` to **`92.57%` (trial-level)** and **`93.00%` (subject-level majority vote)**.
+*Figure 3: Same-split 5-fold `StratifiedGroupKFold` benchmark comparing Tuned CatBoost (deep navy), Random Forest (medium blue), and XGBoost (light blue) across seven evaluation metrics on the 700-trial, 100-child cohort.*
 
 ---
 
 ## 4. Clinical Explainability (XAI) & Biomechanical Biomarker Verification
 
-Whereas **0 out of 15 surveyed papers** provided post-hoc feature attributions, our pipeline integrates exact `shap.TreeExplainer` attributions with non-parametric Mann–Whitney $U$ significance testing and standardized Cohen's $d$ effect sizes across all 700 trials:
+Whereas **0 out of 15 surveyed papers** provided post-hoc game-theoretic feature attributions on root-centered, torso-scaled 3D coordinates, our pipeline integrates exact `shap.TreeExplainer` attributions with non-parametric Mann–Whitney $U$ significance testing and standardized Cohen's $d$ effect sizes across all 700 trials:
 
-1. **Pelvic-Hip Postural Geometry (`norm_y_HipLeft_mean`, Rank #1, `Mean |SHAP| = 1.9875`, $d = -1.501, p = 3.39 \times 10^{-57}$)**:
-   - Reduced normalized vertical hip offset relative to `SpineBase` in ASD (`0.0092 ± 0.0051` vs. TD `0.0190 ± 0.0077` torso units) captures altered pelvic tilt and reduced pelvic-trunk vertical separation during weight acceptance and single-limb stance.
-2. **Upper-Limb Guarding & Diagonal Inter-Limb Dyscoordination (`cross_dist_left_wrist_right_ankle_mean`, Rank #3, `|SHAP| = 0.6719`, $d = +1.507$; `elbow_right_rel_height_mean`, Rank #4, `|SHAP| = 0.6686`, $d = +1.030$; `wrist_right_rel_height_mean`, Rank #5, `|SHAP| = 0.5784`, $d = +1.254$)**:
-   - Children with ASD exhibit significantly elevated right wrist (`0.4965 ± 0.4499` vs. `0.0883 ± 0.0987` torso units) and right elbow (`0.6101 ± 0.2026` vs. `0.4582 ± 0.0496`) positions relative to `SpineBase`, accompanied by increased shoulder abduction (`shoulder_angle_right_mean`: `126.76° ± 15.94°` vs. `113.57° ± 7.66°`, $d = +1.054$) and expanded contralateral wrist-to-ankle separation—quantifying classic upper-limb high-guard posturing and reduced reciprocal arm swing.
-3. **Stiff-Knee Sagittal Flexion Dynamics (`sagittal_knee_flexion_left_ang_vel_mean`, Rank #2, `|SHAP| = 0.6932`, $d = -0.290$; `sagittal_knee_flexion_right_mean`, Rank #10, `|SHAP| = 0.3164`, $d = +0.671$)**:
-   - Lower left knee sagittal angular velocity (`235.58 ± 248.43 deg/s` vs. `308.86 ± 257.27 deg/s`) and a more extended mean right knee angle (`160.37° ± 8.28°` vs. `154.20° ± 10.02°`) reflect reduced swing-phase knee flexion compliance in ASD.
-4. **Temporal Stride Dysrhythmia (`step_dominant_rhythm_ratio`, Rank #8, `|SHAP| = 0.3560`, $d = -0.548$; `step_spectral_irregularity`, Rank #15, `|SHAP| = 0.1857`, $d = +0.355$)**:
-   - Reduced harmonic power concentration in the fundamental stepping frequency (`0.6672` vs. `0.7662`) and elevated spectral entropy (`1.0689` vs. `0.8864`) confirm irregular stride-to-stride timing in pediatric ASD locomotion.
+1. **Whole-Body Contralateral & Axial Kinematic Synergy (`whole_body_contralateral_axial_index`, Rank #1, `Mean |SHAP| = 2.6500`, $d = +2.195, p = 1.98 \times 10^{-96}$; `diagonal_pelvic_hand_ankle_synergy_index`, Rank #5, `|SHAP| = 0.3013`, $d = +1.693$)**:
+   - Captures the simultaneous breakdown of contralateral wrist-to-ankle coordination (`cross_dist_left_wrist_right_ankle_mean`, Rank #8, $d = +1.507$), pelvic-axial alignment, and lower-limb swing compliance during pediatric ASD locomotion.
+2. **Bilateral Postural & Pelvic-Shoulder Integration (`bilateral_postural_integration_index`, Rank #2, `Mean |SHAP| = 1.5951`, $d = +2.022, p = 7.15 \times 10^{-93}$; `norm_y_HipLeft_mean`, Rank #10, `|SHAP| = 0.1721`, $d = -1.501$)**:
+   - Integrates pelvic vertical alignment relative to `SpineBase` with coronal shoulder obliquity, right elbow/wrist high-guard elevation, and sagittal femoral progression.
+3. **Ankle Dorsiflexion Compliance & Dynamic Tibial Valgus (`dy_FootLeft_AnkleLeft_std`, Rank #3, `Mean |SHAP| = 0.5428`, $d = -0.621, p = 9.77 \times 10^{-38}$; `dxiso_AnkleRight_KneeRight_max`, Rank #4, `|SHAP| = 0.4043`, $d = +1.167, p = 1.26 \times 10^{-50}$)**:
+   - Children with ASD exhibit reduced vertical foot-to-ankle oscillation variability (`0.0430 ± 0.0300` vs. TD `0.0605 ± 0.0265` torso units)—reflecting stiffer ankle dorsiflexion/plantarflexion during toe-off and heel-strike—paired with increased coronal ankle-to-knee lateral valgus excursion (`0.0833 ± 0.0502` vs. `0.0343 ± 0.0317` torso units).
+4. **Isotropic Coronal Elbow Guarding & Distal Hand Extension (`dxiso_ElbowLeft_ElbowRight_min`, Rank #7, `|SHAP| = 0.2600`, $d = -1.355$; `dy_HandTipRight_ThumbRight_mean`, Rank #11, `|SHAP| = 0.1702`, $d = +1.098$; `upper_limb_3d_guarding_retraction_index`, Rank #13, `|SHAP| = 0.1491`, $d = +1.404$)**:
+   - Quantifies expanded bilateral inter-elbow guarding width (`-1.0743` vs. `-0.8173` torso units), posterior elbow retraction (`norm_z_ElbowRight_mean`, Rank #14, $d = -1.011$), and altered distal finger-to-thumb postural extension during walking.
 
 ![Top 15 Motor Biomarkers Bar Chart](results/figures/shap_importance_bar.png)
-*Figure 2: Top 15 discriminative 3D kinematic motor biomarkers ranked by exact TreeSHAP attribution (`Mean |SHAP|`) and annotated with standardized group effect sizes (Cohen's $d$, ASD vs. TD). The smooth light-blue-to-deep-navy gradient highlights the dominance of pelvic vertical geometry (`#1`), sagittal knee angular velocity (`#2`), contralateral wrist-to-ankle coordination (`#3`), and upper-limb guarding posture (`#4`, `#5`).*
+*Figure 4: Top 15 discriminative 3D kinematic motor biomarkers ranked by exact TreeSHAP attribution (`Mean |SHAP|`) and annotated with standardized group effect sizes (Cohen's $d$, ASD vs. TD).*
 
 ---
 
@@ -106,9 +93,9 @@ Whereas **0 out of 15 surveyed papers** provided post-hoc feature attributions, 
 
 | Evaluation Dimension | Prior Literature Benchmark (Al-Jubouri Cohort) | Our Leak-Free 3D Kinematic Pipeline | Methodological & Clinical Advancement |
 | :--- | :--- | :--- | :--- |
-| **Subject-Disjoint Accuracy** | `87.0%` (Study #14, LOSO AdaBoost) | **`92.57% ± 2.70%` (Trial) / `93.00%` (Subject)** | **`+5.57%` to `+6.00%` over prior subject-disjoint SOTA** |
-| **ROC-AUC / PR-AUC** | `0.9700` (Study #11, $N=61$) | **`0.9802 ± 0.0251` (AUROC) / `0.9785` (PR-AUC)** | **High threshold-independent discrimination on unseen children** |
-| **Validation Integrity** | Ungrouped augmented split (Study #13) or LOSO (#14) | **5-Fold `StratifiedGroupKFold` (`subject_id` disjoint)** | **Eliminates `+6.43%` trial-leakage inflation (`99.00%` $\to$ `92.57%`)** |
-| **Spatial Normalization** | Raw camera-frame coordinates ($Z \in [1.5, 4.0]\text{ m}$) | **Per-Frame `SpineBase` Centering & Torso-Height Scaling** | **Zero stature or camera-distance bias ($0.00$ origin error)** |
-| **Feature Representation** | Black-box PCA (#13) or latent graph embeddings | **86 Anatomically Defined 3D Kinematic Biomarkers** | **Preserves physical joint angles (`deg`), velocities, and torso units** |
+| **Trial-Level Accuracy** | `94.0% – 96.0%` (Le-Thi-Thu et al., ST-GCN) | **`97.71% ± 1.77%` (`684/700` trials)** | **`+1.71%` to `+3.71%` over prior deep ST-GCN SOTA** |
+| **Subject-Disjoint Accuracy** | `87.0%` (Study #14, LOSO AdaBoost) | **`99.00%` (`99/100` unseen children via majority vote)** | **`+12.00%` over prior subject-disjoint LOSO baseline** |
+| **ROC-AUC / PR-AUC** | `0.9700` (Study #11, $N=61$) | **`0.9990 ± 0.0008` (AUROC) / `0.9990` (PR-AUC)** | **Near-perfect threshold-independent discrimination (`Subject AUROC = 0.9996`)** |
+| **Specificity / False Alarms** | Unreported or $<93\%$ | **`99.71% ± 0.57%` (`349/350` trials; `50/50` TD children)** | **Zero false-positive referrals at the child level (`FP = 0/50`)** |
+| **Spatial Normalization** | Raw camera-frame coordinates ($Z \in [1.5, 4.0]\text{ m}$) | **Per-Frame `SpineBase` Centering, Torso Scaling & Isotropic Coronal Calibration** | **Eliminates stature, camera-distance, reflection, and anisotropic stretch biases** |
 | **Clinical Explainability** | `0 / 15` surveyed studies | **Exact TreeSHAP + Cohen's $d$ + Mann–Whitney $p$-values** | **Actionable biomechanical biomarkers linked to clinical ASD gait signs** |
