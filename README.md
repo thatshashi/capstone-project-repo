@@ -1,4 +1,4 @@
-# Subject-Disjoint 3D Kinematic Biomarker Extraction and CatBoost Classification for Pediatric ASD Gait Screening
+#Movement-Based Classification of Autism Spectrum Disorder in Children Using CatBoost
 
 A reproducible, subject-disjoint machine learning and biomechanical explainability pipeline for classifying **Autism Spectrum Disorder (ASD)** vs. **Typically Developing (TD)** children from 3D Microsoft Kinect v2 skeletal gait recordings on the public **Al-Jubouri et al. (2020)** Dryad dataset (`100 children: 50 ASD, 50 TD; 700 sequences; 25 3D skeletal joints`).
 
