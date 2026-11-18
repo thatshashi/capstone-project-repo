@@ -1,4 +1,4 @@
-# Large archive files & videos
+# Large archive files & raw videos
 Dataset.zip
 Dataset-2.rar
 *.avi
@@ -7,17 +7,18 @@ Dataset/Autism/
 Dataset/Typical/
 Dataset/Severe level of ASD/
 
-# Raw / legacy spreadsheets & draft documents
-Final dataset*.xlsx
-data/unseen_blind_samples.xlsx
-data/unseen_test_samples.xlsx
+# Raw / legacy spreadsheets, presentation templates & draft documents
+*.xlsx
 *.docx
+*.pptx
+Capstone_PPT_Template.pptx
+Movement-Based_ASD Classification Final (1).docx
 Research.md
 train_and_evaluate.py
 evaluate_and_plot.py
 notebooks/
 
-# Python cache & build files
+# Python virtual environments, caches & CatBoost logs
 .venv/
 venv/
 __pycache__/
@@ -26,7 +27,7 @@ __pycache__/
 *.log
 catboost_info/
 
-# OS-specific
+# OS-specific metadata
 .DS_Store
 .DS_Store?
 ._*

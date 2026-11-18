@@ -591,7 +591,7 @@ def generate_cross_validated_roc_plot(
         label=f"Operating Point (Sens = {op_tpr*100:.2f}%, Spec = {cb_res['specificity_mean']*100:.2f}%)",
     )
     ax.annotate(
-        f"Operating Point (p >= 0.50)\nSens = {op_tpr*100:.2f}%, Spec = {cb_res['specificity_mean']*100:.2f}%\nAcc = {cb_res['accuracy_mean']*100:.2f}% (Subj: {cb_res['subj_maj_accuracy']*100:.0f}%)",
+        f"Operating Point (p >= 0.50)\nSens = {op_tpr*100:.2f}%, Spec = {cb_res['specificity_mean']*100:.2f}%\nAcc = {cb_res['accuracy_mean']*100:.2f}% +/- {cb_res['accuracy_std']*100:.2f}%",
         xy=(op_fpr, op_tpr),
         xytext=(0.18, 0.78),
         fontsize=8.8,
@@ -843,52 +843,31 @@ def generate_confusion_matrix_plot(
     cm_plot_path: str = os.path.join("results", "figures", "confusion_matrix.png"),
 ) -> None:
     """
-    Generates a two-panel publication Confusion Matrix figure showing:
-    (A) Trial-Level Out-of-Fold Confusion Matrix (N = 700 trials across 5 subject-grouped folds)
-    (B) Subject-Level Out-of-Fold Confusion Matrix (N = 100 unseen children via 7-trial majority vote)
+    Generates a clean single-panel publication Confusion Matrix figure showing:
+    Out-of-Fold Confusion Matrix (N = 700 trials across 5 subject-grouped folds).
     """
     apply_academic_style()
     os.makedirs(os.path.dirname(cm_plot_path), exist_ok=True)
 
-    fig = plt.figure(figsize=(15.4, 6.2))
-    gs = fig.add_gridspec(1, 3, width_ratios=[1.0, 1.0, 0.055], wspace=0.72)
+    fig = plt.figure(figsize=(8.6, 6.4))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 0.055], wspace=0.18)
     ax0 = fig.add_subplot(gs[0, 0])
-    ax1 = fig.add_subplot(gs[0, 1])
-    cax = fig.add_subplot(gs[0, 2])
+    cax = fig.add_subplot(gs[0, 1])
 
     cm_trials = np.array(
         [[cb_res["oof_tn"], cb_res["oof_fp"]], [cb_res["oof_fn"], cb_res["oof_tp"]]],
         dtype=int,
     )
-    cm_subjs = np.array(
-        [[cb_res["subj_tn"], cb_res["subj_fp"]], [cb_res["subj_fn"], cb_res["subj_tp"]]],
-        dtype=int,
-    )
-
-    subj_sens = (cb_res["subj_tp"] / max(cb_res["subj_tp"] + cb_res["subj_fn"], 1)) * 100.0
-    subj_spec = (cb_res["subj_tn"] / max(cb_res["subj_tn"] + cb_res["subj_fp"], 1)) * 100.0
 
     im1 = _draw_confusion_heatmap(
         ax0,
         cm_trials,
-        title="(A) Trial-Level Out-of-Fold (N = 700 Trials)",
-        subtitle=f"Acc = {cb_res['accuracy_mean']*100:.2f}% | Sens = {cb_res['sensitivity_mean']*100:.2f}% | Spec = {cb_res['specificity_mean']*100:.2f}%",
+        title="Leak-Free Out-of-Fold Diagnostic Confusion Matrix (N = 700 Trials)",
+        subtitle=(
+            f"5-Fold StratifiedGroupKFold | Acc = {cb_res['accuracy_mean']*100:.2f}% +/- {cb_res['accuracy_std']*100:.2f}% | "
+            f"Sens = {cb_res['sensitivity_mean']*100:.2f}% | Spec = {cb_res['specificity_mean']*100:.2f}%"
+        ),
         show_ylabel=True,
-    )
-    _draw_confusion_heatmap(
-        ax1,
-        cm_subjs,
-        title="(B) Subject-Level Majority Vote (N = 100 Unseen Children)",
-        subtitle=f"Acc = {cb_res['subj_maj_accuracy']*100:.2f}% | Sens = {subj_sens:.2f}% | Spec = {subj_spec:.2f}%",
-        show_ylabel=False,
-    )
-
-    fig.suptitle(
-        "Leak-Free Out-of-Fold Diagnostic Confusion Matrices (5-Fold StratifiedGroupKFold by Subject ID)",
-        fontsize=13.2,
-        fontweight="bold",
-        color=NAVY_DARKEST,
-        y=0.98,
     )
 
     cbar = fig.colorbar(im1, cax=cax)
@@ -898,7 +877,7 @@ def generate_confusion_matrix_plot(
     cbar.outline.set_edgecolor(SPINE_COLOR)
     cbar.outline.set_linewidth(0.85)
 
-    plt.savefig(cm_plot_path, dpi=300, bbox_inches="tight", pad_inches=0.24)
+    plt.savefig(cm_plot_path, dpi=300, bbox_inches="tight", pad_inches=0.22)
     plt.close(fig)
 
 

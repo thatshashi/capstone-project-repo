@@ -81,11 +81,10 @@ def main() -> None:
     if os.path.exists(eval_csv):
         ev = pd.read_csv(eval_csv).iloc[0]
         print(
-            f"  * 5-Fold GroupCV Benchmark  : Acc = {ev['accuracy_mean']*100:.2f}% +/- {ev['accuracy_std']*100:.2f}% "
-            f"(Subject Acc = {ev['subject_majority_vote_accuracy']*100:.2f}%)"
+            f"  * 5-Fold GroupCV Benchmark  : Acc = {ev['accuracy_mean']*100:.2f}% +/- {ev['accuracy_std']*100:.2f}%"
         )
         print(
-            f"  * 5-Fold GroupCV Discrimination : AUROC = {ev['roc_auc_mean']:.4f} +/- {ev['roc_auc_std']:.4f} | "
+            f"  * 5-Fold GroupCV Metrics    : AUROC = {ev['roc_auc_mean']:.4f} +/- {ev['roc_auc_std']:.4f} | "
             f"Sens = {ev['sensitivity_mean']*100:.2f}% | Spec = {ev['specificity_mean']*100:.2f}% | "
             f"F1 = {ev['f1_mean']:.4f}"
         )
