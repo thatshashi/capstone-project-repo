@@ -44,7 +44,7 @@ All models are evaluated on identical 5-fold subject-disjoint splits using the 8
 
 | Model & Hyperparameter Configuration | Accuracy (%) | Sensitivity / ASD Recall (%) | Specificity / TD Recall (%) | Precision / PPV (%) | F1-Score | AUROC |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Ours — Tuned CatBoost (`iterations=500, depth=5, lr=0.04, l2=4`)** | **97.71 ± 1.77** | **95.71 ± 3.73** | **99.71 ± 0.57** | **99.71 ± 0.57** | **0.9763 ± 0.0190** | **0.9990 ± 0.0008** |
+| **Proposed — Tuned CatBoost (`iterations=500, depth=5, lr=0.04, l2=4`)** | **97.71 ± 1.77** | **95.71 ± 3.73** | **99.71 ± 0.57** | **99.71 ± 0.57** | **0.9763 ± 0.0190** | **0.9990 ± 0.0008** |
 | **Random Forest Baseline (`n_estimators=300, max_depth=6`)** | 97.00 ± 1.71 | 94.57 ± 3.88 | 99.43 ± 1.14 | 99.44 ± 1.13 | 0.9689 ± 0.0183 | 0.9992 ± 0.0005 |
 | **XGBoost Baseline (`n_estimators=300, max_depth=5, lr=0.05, l2=4`)** | 96.29 ± 2.84 | 94.29 ± 6.45 | 98.29 ± 1.07 | 98.28 ± 1.07 | 0.9609 ± 0.0321 | 0.9984 ± 0.0011 |
 
@@ -66,7 +66,7 @@ All models are evaluated on identical 5-fold subject-disjoint splits using the 8
 | **Y. Firat (2026)** — *Random Forest* | Selected kinematic & spatiotemporal features | Cross-Validation | **91.0%** | No |
 | **Le-Thi-Thu et al. (2026)** — *ST-GCN* | Spatial-Temporal Graph Convolutional Network | Cross-Validation | **94.0%** | No |
 | **Movement Signs Kinect (2024)** — *AdaBoost / NB* | Kinect joint positions, angles & medical rules | Leave-One-Subject-Out (LOSO) | **87.0%** *(AdaBoost)* | No |
-| **Ours (Tuned CatBoost)** | **86 Root-Centered, Torso-Scaled 3D Kinematic Biomarkers** | **5-Fold `StratifiedGroupKFold` (by `subject_id`)** | **97.71% ± 1.77%** | **Yes (Exact TreeSHAP Top-15 Biomarkers)** |
+| **Proposed (Tuned CatBoost)** | **86 Root-Centered, Torso-Scaled 3D Kinematic Biomarkers** | **5-Fold `StratifiedGroupKFold` (by `subject_id`)** | **97.71% ± 1.77%** | **Yes (Exact TreeSHAP Top-15 Biomarkers)** |
 
 ![Literature Accuracy Comparison Chart](results/figures/literature_comparison_chart.png)
 *Figure 2: Horizontal accuracy comparison against published studies evaluated on the Al-Jubouri 3D Kinect v2 gait dataset.*

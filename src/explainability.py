@@ -1017,10 +1017,10 @@ def generate_literature_benchmark_comparison_plot(
         ("Al-Jubouri et al. (2021)\nRough Set + PCA (Augmented)", 92.0, 92.0, 92.0, "#3884C2", "Augmented Split"),
         ("Firat et al.\nRandom Forest (Kinematic Table)", 92.0, 91.0, 93.0, "#246EB4", "Cross-Val"),
         ("Le-Thi-Thu et al.\nST-GCN (Deep Spatio-Temporal Graph)", 95.0, 94.0, 96.0, "#15589E", "Cross-Val (Prior SOTA)"),
-        ("Ours — XGBoost (Same-Split)\n86 Normalized 3D Biomarkers", xgb_acc, xgb_acc - xgb_sd, min(100.0, xgb_acc + xgb_sd), "#1D68A8", "5-Fold GroupCV"),
-        ("Ours — Random Forest (Same-Split)\n86 Normalized 3D Biomarkers", rf_acc, rf_acc - rf_sd, min(100.0, rf_acc + rf_sd), "#0E4C8A", "5-Fold GroupCV"),
-        ("Ours — Tuned CatBoost (Trial-Level)\n86 Normalized 3D Biomarkers", cb_acc, cb_acc - cb_sd, min(100.0, cb_acc + cb_sd), NAVY_DEEP, "5-Fold GroupCV"),
-        ("Ours — Tuned CatBoost (Subject Vote)\n100 Unseen Children (7-Trial Vote)", cb_subj, cb["bootstrap_ci"]["accuracy"][0]*100.0, cb["bootstrap_ci"]["accuracy"][1]*100.0, NAVY_DARKEST, "5-Fold GroupCV (99/100)"),
+        ("Proposed — XGBoost (Same-Split)\n86 Normalized 3D Biomarkers", xgb_acc, xgb_acc - xgb_sd, min(100.0, xgb_acc + xgb_sd), "#1D68A8", "5-Fold GroupCV"),
+        ("Proposed — Random Forest (Same-Split)\n86 Normalized 3D Biomarkers", rf_acc, rf_acc - rf_sd, min(100.0, rf_acc + rf_sd), "#0E4C8A", "5-Fold GroupCV"),
+        ("Proposed — Tuned CatBoost (Trial-Level)\n86 Normalized 3D Biomarkers", cb_acc, cb_acc - cb_sd, min(100.0, cb_acc + cb_sd), NAVY_DEEP, "5-Fold GroupCV"),
+        ("Proposed — Tuned CatBoost (Subject Vote)\n100 Unseen Children (7-Trial Vote)", cb_subj, cb["bootstrap_ci"]["accuracy"][0]*100.0, cb["bootstrap_ci"]["accuracy"][1]*100.0, NAVY_DARKEST, "5-Fold GroupCV (99/100)"),
     ]
 
     fig = plt.figure(figsize=(16.2, 7.6))
@@ -1110,10 +1110,10 @@ def generate_literature_benchmark_comparison_plot(
             [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],  # Al-Jubouri Aug PCA
             [0.0, 0.5, 0.5, 1.0, 0.5, 0.5],  # Firat RF
             [0.5, 0.5, 1.0, 0.0, 0.0, 0.0],  # Le-Thi-Thu ST-GCN
-            [1.0, 1.0, 1.0, 1.0, 0.5, 1.0],  # Ours XGBoost
-            [1.0, 1.0, 1.0, 1.0, 0.5, 1.0],  # Ours RF
-            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],  # Ours CatBoost Trial
-            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],  # Ours CatBoost Subject
+            [1.0, 1.0, 1.0, 1.0, 0.5, 1.0],  # Proposed XGBoost
+            [1.0, 1.0, 1.0, 1.0, 0.5, 1.0],  # Proposed RF
+            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],  # Proposed CatBoost Trial
+            [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],  # Proposed CatBoost Subject
         ],
         dtype=np.float64,
     )
@@ -1168,7 +1168,7 @@ def generate_model_evaluation_comparison_suite(
 ) -> None:
     """
     Generates the 4-Panel Model Evaluation & Comparison Suite (`results/figures/model_evaluation_comparison_suite.png`):
-    (A) 7-Axis Radar / Spider Profile comparing Ours (CatBoost, RF, XGBoost) vs Literature SOTA
+    (A) 7-Axis Radar / Spider Profile comparing Proposed (CatBoost, RF, XGBoost) vs Literature SOTA
     (B) Per-Fold Cross-Validation Accuracy Trajectory Plot (Folds 1..5) vs Literature SOTA Ceilings
     (C) Accuracy vs. Methodological Rigor & Clinical Explainability Quadrant (Trade-Off Plot)
     (D) Subject-Level Out-of-Fold Diagnostic Probability Waterfall across all 100 Unseen Children
@@ -1202,7 +1202,7 @@ def generate_model_evaluation_comparison_suite(
 
     radar_profiles = [
         (
-            f"Ours: Tuned CatBoost ({cb['accuracy_mean']*100:.2f}%)",
+            f"Proposed: Tuned CatBoost ({cb['accuracy_mean']*100:.2f}%)",
             [
                 cb["accuracy_mean"] * 100.0,
                 cb["subj_maj_accuracy"] * 100.0,
@@ -1218,7 +1218,7 @@ def generate_model_evaluation_comparison_suite(
             0.22,
         ),
         (
-            f"Ours: Random Forest ({rf['accuracy_mean']*100:.2f}%)",
+            f"Proposed: Random Forest ({rf['accuracy_mean']*100:.2f}%)",
             [
                 rf["accuracy_mean"] * 100.0,
                 rf["subj_maj_accuracy"] * 100.0,
@@ -1234,7 +1234,7 @@ def generate_model_evaluation_comparison_suite(
             0.08,
         ),
         (
-            f"Ours: XGBoost ({xgb['accuracy_mean']*100:.2f}%)",
+            f"Proposed: XGBoost ({xgb['accuracy_mean']*100:.2f}%)",
             [
                 xgb["accuracy_mean"] * 100.0,
                 xgb["subj_maj_accuracy"] * 100.0,
@@ -1300,9 +1300,9 @@ def generate_model_evaluation_comparison_suite(
     ax_b.axhline(92.0, color="#6FA5D6", ls="-.", lw=1.2, label="Al-Jubouri PCA Augmented (92.0%)", zorder=2)
 
     for m_name, res, col, mk, ls, lw in [
-        ("Ours: CatBoost (Tuned)", cb, NAVY_DARKEST, "o", "-", 2.8),
-        ("Ours: Random Forest (Same-Split)", rf, BLUE_MEDIUM, "s", "--", 2.0),
-        ("Ours: XGBoost (Same-Split)", xgb, BLUE_STEEL, "^", "-.", 1.9),
+        ("Proposed: CatBoost (Tuned)", cb, NAVY_DARKEST, "o", "-", 2.8),
+        ("Proposed: Random Forest (Same-Split)", rf, BLUE_MEDIUM, "s", "--", 2.0),
+        ("Proposed: XGBoost (Same-Split)", xgb, BLUE_STEEL, "^", "-.", 1.9),
     ]:
         f_vals = np.array(res["fold_accuracies"]) * 100.0
         ax_b.plot(
@@ -1316,7 +1316,7 @@ def generate_model_evaluation_comparison_suite(
             label=f"{m_name} (Mean = {f_vals.mean():.2f}%)",
             zorder=4,
         )
-        if m_name == "Ours: CatBoost (Tuned)":
+        if m_name == "Proposed: CatBoost (Tuned)":
             for f_i, fv in zip(folds, f_vals):
                 y_off = -14 if f_i == 2 else 8
                 ax_b.annotate(
@@ -1371,9 +1371,9 @@ def generate_model_evaluation_comparison_suite(
         ("Le-Thi-Thu\nST-GCN (Deep Graph)", 4.6, 95.0, 220, "#3787C0", (-15, -26)),
         ("Firat et al.\nRandom Forest", 5.4, 92.0, 190, "#2B7BBA", (0, -24)),
         ("Movement Signs (2024)\nAdaBoost (LOSO)", 6.2, 87.0, 190, "#1D68A8", (-10, 14)),
-        ("Ours: XGBoost (96.29%)", 7.6, xgb["accuracy_mean"]*100.0, 210, "#1560BD", (-55, -26)),
-        ("Ours: Random Forest (97.00%)", 8.5, rf["accuracy_mean"]*100.0, 220, "#083D77", (-95, 12)),
-        ("Ours: Tuned CatBoost\n(97.71% Trial | 99.00% Subj)", 9.6, cb["accuracy_mean"]*100.0, 320, NAVY_DARKEST, (-65, -34)),
+        ("Proposed: XGBoost (96.29%)", 7.6, xgb["accuracy_mean"]*100.0, 210, "#1560BD", (-55, -26)),
+        ("Proposed: Random Forest (97.00%)", 8.5, rf["accuracy_mean"]*100.0, 220, "#083D77", (-95, 12)),
+        ("Proposed: Tuned CatBoost\n(97.71% Trial | 99.00% Subj)", 9.6, cb["accuracy_mean"]*100.0, 320, NAVY_DARKEST, (-65, -34)),
     ]
 
     for lbl, x_rigor, y_acc, sz, col, offset_xy in quadrant_models:
@@ -1480,7 +1480,7 @@ def update_literature_comparison_csv(
         {"Study #": "14", "Reference": "Movement Signs Kinect (2024)", "Method": "AdaBoost / SVM / Naive Bayes (LOSO)", "Dataset Size": "100 children (50 ASD + 50 TD)", "Reported Accuracy": "87.0% (AdaBoost) / 84.0% (NB)", "Explainability": "No"},
         {"Study #": "15", "Reference": "Interpersonal Coordination (2024)", "Method": "Motion Energy + Cross-Wavelet ML", "Dataset Size": "43 children (20 ASD + 23 TD)", "Reported Accuracy": "85.37% - 92.68%", "Explainability": "No"},
         {
-            "Study #": "Ours (Leak-Free)",
+            "Study #": "Proposed (Leak-Free)",
             "Reference": "Root-Centered Torso-Scaled 3D Kinematic CatBoost (5-Fold StratifiedGroupKFold)",
             "Method": "Tuned CatBoost (86 Normalized 3D Kinematic Biomarkers)",
             "Dataset Size": "100 unique children (50 ASD + 50 TD; 700 trials)",

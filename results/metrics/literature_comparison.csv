@@ -14,4 +14,4 @@ Study #,Reference,Method,Dataset Size,Reported Accuracy,Explainability
 13,Rough Set + PCA Augmentation (2021),Rough Set + PCA,100 children (700 augmented trials),60.0% (raw) -> 92.0% (augmented),No
 14,Movement Signs Kinect (2024),AdaBoost / SVM / Naive Bayes (LOSO),100 children (50 ASD + 50 TD),87.0% (AdaBoost) / 84.0% (NB),No
 15,Interpersonal Coordination (2024),Motion Energy + Cross-Wavelet ML,43 children (20 ASD + 23 TD),85.37% - 92.68%,No
-Ours (Leak-Free),Root-Centered Torso-Scaled 3D Kinematic CatBoost (5-Fold StratifiedGroupKFold),Tuned CatBoost (86 Normalized 3D Kinematic Biomarkers),100 unique children (50 ASD + 50 TD; 700 trials),"97.71% +/- 1.77% (Subject: 99.00%, AUROC: 0.9990)",Yes (Exact TreeSHAP Top-15 Motor Biomarkers)
+Proposed (Leak-Free),Root-Centered Torso-Scaled 3D Kinematic CatBoost (5-Fold StratifiedGroupKFold),Tuned CatBoost (86 Normalized 3D Kinematic Biomarkers),100 unique children (50 ASD + 50 TD; 700 trials),"97.71% +/- 1.77% (F1: 0.9763, AUROC: 0.9990)",Yes (Exact TreeSHAP Top-15 Motor Biomarkers)
