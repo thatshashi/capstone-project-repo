@@ -7,14 +7,13 @@ figures and clinical summary tables using a unified academic light-blue-to-deep-
 2. `results/figures/shap_importance_bar.png` — Ranked horizontal bar chart of top 15 motor biomarkers with colourbar.
 3. `results/roc_curve.png` & `results/figures/roc_curve.png` — 5-fold StratifiedGroupKFold ROC curves.
 4. `results/figures/precision_recall_curve.png` — 5-fold StratifiedGroupKFold Precision-Recall curves.
-5. `results/figures/confusion_matrix.png` — Out-of-fold Confusion Matrices (Trial-level N=700 & Subject-level N=100).
+5. `results/figures/confusion_matrix.png` — Out-of-fold Confusion Matrix (N=700 trials).
 6. `results/figures/metrics_bar_chart.png` — Multi-metric benchmark comparison across CatBoost, RF, and XGBoost.
-7. `results/figures/probability_distribution.png` — Out-of-fold predicted ASD probability distribution & calibration.
-8. `results/figures/diagnostic_dashboard.png` — 4-panel clinical diagnostic evaluation composite dashboard.
-9. `results/figures/literature_benchmark_comparison.png` — Forest/Lollipop & Methodological Scorecard vs. published studies on the Al-Jubouri dataset.
-10. `results/figures/model_evaluation_comparison_suite.png` — 4-panel Radar, Fold-Trajectory, Trade-off Quadrant & 100-Subject Margin Suite.
-11. `results/feature_importance.csv` & `results/metrics/top_features_clinical_report.csv` — Ranked biomarker tables.
-12. `results/metrics/literature_comparison.csv` — Synchronized 16-row literature benchmark table.
+7. `results/figures/diagnostic_dashboard.png` — 4-panel clinical diagnostic evaluation composite dashboard.
+8. `results/figures/literature_benchmark_comparison.png` — Forest/Lollipop & Methodological Scorecard vs. published studies on the Al-Jubouri dataset.
+9. `results/figures/model_evaluation_comparison_suite.png` — 4-panel Radar, Fold-Trajectory, Trade-off Quadrant & 100-Subject Margin Suite.
+10. `results/feature_importance.csv` & `results/metrics/top_features_clinical_report.csv` — Ranked biomarker tables.
+11. `results/metrics/literature_comparison.csv` — Synchronized 16-row literature benchmark table.
 """
 
 from __future__ import annotations
@@ -978,100 +977,6 @@ def generate_metrics_bar_chart(
     plt.close(fig)
 
 
-def generate_probability_distribution_plot(
-    cb_res: Dict[str, Any],
-    y: pd.Series,
-    prob_plot_path: str = os.path.join("results", "figures", "probability_distribution.png"),
-) -> None:
-    """
-    Plots the out-of-fold predicted ASD probability distribution for TD (light blue) vs ASD (deep navy)
-    across all 700 trials, highlighting class separation and calibration metrics.
-    """
-    apply_academic_style()
-    os.makedirs(os.path.dirname(prob_plot_path), exist_ok=True)
-
-    oof_probs = cb_res["oof_probs"]
-    td_probs = oof_probs[y == 0]
-    asd_probs = oof_probs[y == 1]
-
-    fig, ax = plt.subplots(figsize=(9.2, 6.0))
-    style_axes(ax, despined=True)
-
-    bins = np.linspace(0.0, 1.0, 26)
-    ax.hist(
-        td_probs,
-        bins=bins,
-        color=BLUE_SKY,
-        edgecolor=BLUE_MEDIUM,
-        linewidth=0.9,
-        alpha=0.78,
-        label=f"Typically Developing (TD, n = 350 trials | Median P = {np.median(td_probs):.4f})",
-        zorder=3,
-    )
-    ax.hist(
-        asd_probs,
-        bins=bins,
-        color=NAVY_DEEP,
-        edgecolor=NAVY_DARKEST,
-        linewidth=0.9,
-        alpha=0.84,
-        label=f"Autism Spectrum Disorder (ASD, n = 350 trials | Median P = {np.median(asd_probs):.4f})",
-        zorder=4,
-    )
-
-    ax.axvline(
-        0.50,
-        color=NAVY_DARKEST,
-        linestyle="--",
-        linewidth=1.8,
-        label="Classification Decision Threshold (P = 0.50)",
-        zorder=5,
-    )
-
-    ax.text(
-        0.50,
-        ax.get_ylim()[1] * 0.78,
-        f"Out-of-Fold Calibration Summary (5-Fold GroupCV)\n"
-        f"• Brier Score = {cb_res['oof_brier']:.4f}  |  Cohen's k = {cb_res['oof_kappa']:.4f}\n"
-        f"• TD Specificity = {cb_res['specificity_mean']*100:.2f}% ({cb_res['oof_tn']}/350 < 0.50)\n"
-        f"• ASD Sensitivity = {cb_res['sensitivity_mean']*100:.2f}% ({cb_res['oof_tp']}/350 >= 0.50)",
-        ha="center",
-        va="top",
-        fontsize=9.2,
-        fontweight="semibold",
-        color=NAVY_DARKEST,
-        bbox=dict(boxstyle="round,pad=0.45", facecolor="#EBF3FA", edgecolor="#2B7BBA", lw=0.95),
-        zorder=6,
-    )
-
-    ax.set_xlim([-0.02, 1.02])
-    ax.set_xlabel(
-        "Out-of-Fold Predicted Probability of ASD, P(y = 1 | x)",
-        fontsize=10.8,
-        fontweight="bold",
-        labelpad=8,
-    )
-    ax.set_ylabel("Number of Gait Trials (Total N = 700)", fontsize=10.8, fontweight="bold", labelpad=8)
-    ax.set_title(
-        "Out-of-Fold Predicted Probability Distribution & Class Separation (5-Fold StratifiedGroupKFold)",
-        fontsize=12.0,
-        fontweight="bold",
-        color=NAVY_DARKEST,
-        pad=12,
-    )
-    ax.legend(
-        loc="upper center",
-        fontsize=9.0,
-        frameon=True,
-        facecolor="#FFFFFF",
-        edgecolor="#BCCCDC",
-        framealpha=0.96,
-    )
-    plt.tight_layout()
-    plt.savefig(prob_plot_path, dpi=300, bbox_inches="tight", pad_inches=0.2)
-    plt.close(fig)
-
-
 def generate_diagnostic_dashboard(
     benchmark_results: Dict[str, Dict[str, Any]],
     y: pd.Series,
@@ -1786,11 +1691,6 @@ def run_explainability_pipeline(
         benchmark_results=benchmark_results,
         bar_plot_path=os.path.join("results", "figures", "metrics_bar_chart.png"),
     )
-    generate_probability_distribution_plot(
-        cb_res=cb_res,
-        y=y,
-        prob_plot_path=os.path.join("results", "figures", "probability_distribution.png"),
-    )
     generate_diagnostic_dashboard(
         benchmark_results=benchmark_results,
         y=y,
@@ -1823,7 +1723,6 @@ def run_explainability_pipeline(
     print("    * results/figures/precision_recall_curve.png")
     print("    * results/figures/confusion_matrix.png")
     print("    * results/figures/metrics_bar_chart.png")
-    print("    * results/figures/probability_distribution.png")
     print("    * results/figures/diagnostic_dashboard.png")
     print("    * results/figures/literature_benchmark_comparison.png")
     print("    * results/figures/model_evaluation_comparison_suite.png")

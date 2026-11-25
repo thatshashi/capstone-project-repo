@@ -81,9 +81,6 @@ All models are evaluated on identical 5-fold subject-disjoint splits using the 8
 ![Cross-Validated ROC Curve](results/roc_curve.png)
 *Figure 4: Five-fold StratifiedGroupKFold Receiver Operating Characteristic (ROC) curves grouped by subject_id (AUROC = 0.9990 ± 0.0008; operating point sensitivity = 95.71%, specificity = 99.71%).*
 
-![Out-of-Fold Probability Distribution](results/figures/probability_distribution.png)
-*Figure 5: Empirical distribution of out-of-fold predicted ASD probabilities across all 700 unseen-subject sequences (TD median P = 0.0012, ASD median P = 0.9982, Brier score = 0.0209, Cohen's kappa = 0.9543).*
-
 ---
 
 ## 3. Clinical Explainability: Top 15 3D Motor Biomarkers (`src/explainability.py`)
@@ -109,10 +106,10 @@ Exact game-theoretic feature attributions are computed via `shap.TreeExplainer` 
 | **15** | `step_spectral_irregularity` | `0.1374` | `0.8864 ± 0.4851` | `1.0689 ± 0.5419` | `+0.355` | `2.93e-09` | Step Spectral Entropy — Frequency-domain irregularity of lower-limb gait periodicity |
 
 ![TreeSHAP Motor Biomarker Beeswarm Plot](results/shap_summary.png)
-*Figure 6: TreeSHAP motor biomarker attribution beeswarm plot across the top 15 3D kinematic features (N = 700 sequences).*
+*Figure 5: TreeSHAP motor biomarker attribution beeswarm plot across the top 15 3D kinematic features (N = 700 sequences).*
 
 ![Top 15 Motor Biomarkers Bar Chart](results/figures/shap_importance_bar.png)
-*Figure 7: Ranked horizontal bar chart of the top 15 discriminative 3D kinematic motor biomarkers ordered by mean absolute TreeSHAP attribution (Mean |SHAP|) and annotated with standardized group effect sizes (Cohen's d).*
+*Figure 6: Ranked horizontal bar chart of the top 15 discriminative 3D kinematic motor biomarkers ordered by mean absolute TreeSHAP attribution (Mean |SHAP|) and annotated with standardized group effect sizes (Cohen's d).*
 
 ---
 
@@ -140,7 +137,6 @@ capstone-main/
 │   │   ├── methodology_architecture.png       # 5-stage system architecture workflow diagram (300 DPI)
 │   │   ├── literature_comparison_chart.png    # Horizontal accuracy comparison against Al-Jubouri dataset studies (300 DPI)
 │   │   ├── confusion_matrix.png               # Leak-free out-of-fold diagnostic confusion matrix (N = 700 sequences)
-│   │   ├── probability_distribution.png       # Out-of-fold predicted ASD probability distribution & calibration summary
 │   │   ├── shap_beeswarm.png                  # TreeSHAP beeswarm plot (archive copy)
 │   │   └── shap_importance_bar.png            # Top 15 biomarkers ranked bar chart with Cohen's d effect sizes
 │   ├── metrics/

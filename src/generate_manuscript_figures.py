@@ -939,68 +939,76 @@ def generate_literature_comparison_chart(
     output_path: str = os.path.join(OUTPUT_DIR, "literature_comparison_chart.png"),
 ) -> None:
     """
-    Generates Figure 2: Simple Literature Accuracy Comparison Graph (`literature_comparison_chart.png`).
-    Reads the exact study names, methods, validation protocols, and reported accuracies from
-    `paper studies table.png` (TABLE 2. Comparison with published results on the Al-Jubouri 3D Kinect v2 dataset)
-    and compares them against our Tuned CatBoost model (97.71% ± 1.77%).
+    Generates Figure 2: Compact, high-readability Literature Accuracy Comparison Graph
+    (`literature_comparison_chart.png`, figsize=(8.8, 4.3), 300 DPI) comparing the 5 verified
+    single-dataset studies on the Al-Jubouri 3D Kinect v2 dataset with symmetrical in-bar
+    white percentage labels and zero line-text overlap.
     """
     configure_typography()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    # Exact studies from `paper studies table.png` (Al-Jubouri 3D Kinect v2 dataset)
+    # 5 verified single-dataset studies ordered bottom-to-top so Proposed sits at top
     studies = [
         {
-            "label": "Movement Signs Kinect (2024) — AdaBoost / NB\n[Positions & angles + medical rules | LOSO]",
-            "acc": 87.00,
-            "val_text": "87.0% (AdaBoost)",
-            "is_ours": False,
-            "color": "#829AB1",
-        },
-        {
-            "label": "Mukhanova et al. — GCN-BiLSTM\n[Spatial-Temporal Graph + BiLSTM | Cross-Validation]",
+            "label": "Mukhanova et al. (2026) — GCN-BiLSTM",
             "acc": 88.50,
-            "val_text": "88.5%",
+            "val_text": "88.50%",
             "is_ours": False,
-            "color": "#627D98",
+            "color": "#64748B",
         },
         {
-            "label": "Firat et al. — Random Forest\n[Selected kinematic & spatiotemporal features | Cross-Validation]",
+            "label": "Y. Fırat (2026) — Random Forest",
             "acc": 91.00,
-            "val_text": "91.0%",
+            "val_text": "91.00%",
             "is_ours": False,
-            "color": "#486581",
+            "color": "#64748B",
         },
         {
-            "label": "Al-Jubouri et al. (2021) — Rough Set + PCA\n[1,259 tabular features using PCA | Augmented Split]",
+            "label": "Al-Jubouri et al. (2021) — Rough Set + PCA",
             "acc": 92.00,
-            "val_text": "92.0%",
+            "val_text": "92.00%",
             "is_ours": False,
-            "color": "#334E68",
+            "color": "#64748B",
         },
         {
-            "label": "Le-Thi-Thu et al. — ST-GCN\n[Spatial-Temporal Graph ConvNet | Cross-Validation]",
+            "label": "Le-Thi-Thu et al. (2026) — ST-GCN",
             "acc": 94.00,
-            "val_text": "94.0%",
+            "val_text": "94.00%",
             "is_ours": False,
-            "color": "#2B7BBA",
+            "color": "#64748B",
         },
         {
-            "label": "Ours (Tuned CatBoost)\n[86 Root-Centered, Torso-Scaled 3D Kinematic Biomarkers | 5-Fold StratifiedGroupKFold]",
+            "label": "Proposed (Tuned CatBoost, 5-Fold GroupCV)",
             "acc": 97.71,
             "val_text": "97.71% ± 1.77%",
             "is_ours": True,
-            "color": "#083D77",
+            "color": "#0F3D68",
         },
     ]
 
-    fig, ax = plt.subplots(figsize=(13.6, 7.2), dpi=300)
-    ax.set_facecolor("#F8FBFF")
+    fig, ax = plt.subplots(figsize=(8.8, 4.3), dpi=300, facecolor="#FFFFFF")
+    ax.set_facecolor("#FFFFFF")
+    ax.set_axisbelow(True)
 
     y_pos = np.arange(len(studies))
     accs = [s["acc"] for s in studies]
     colors = [s["color"] for s in studies]
-    edge_colors = ["#041E42" if s["is_ours"] else "#243B53" for s in studies]
-    line_widths = [1.5 if s["is_ours"] else 0.95 for s in studies]
+    edge_colors = ["#082542" if s["is_ours"] else "#475569" for s in studies]
+    line_widths = [1.4 if s["is_ours"] else 1.0 for s in studies]
+
+    # Subtle vertical gridlines strictly behind bars (zorder=1)
+    ax.grid(axis="x", linestyle=":", linewidth=0.75, color="#E2E8F0", alpha=0.95, zorder=1)
+    ax.grid(axis="y", visible=False)
+
+    # Vertical dashed reference line at 94.0% strictly behind bars (zorder=1)
+    ax.axvline(
+        94.0,
+        color="#64748B",
+        linestyle="--",
+        linewidth=1.3,
+        alpha=0.90,
+        zorder=1,
+    )
 
     bars = ax.barh(
         y_pos,
@@ -1012,120 +1020,75 @@ def generate_literature_comparison_chart(
         zorder=3,
     )
 
-    # Subtle highlight band for our leak-free row
-    ax.axhspan(4.52, 5.52, color="#E6F0FA", alpha=0.70, zorder=1)
-
-    # Subtle dashed vertical threshold line at 96.0% showing our model surpassing prior SOTA
-    ax.axvline(
-        96.0,
-        color="#B03A2E",
-        linestyle="--",
-        linewidth=1.55,
-        alpha=0.88,
-        zorder=4,
-    )
-
-    # Place the 96.0% threshold callout cleanly in open whitespace at bottom right of the line
-    ax.annotate(
-        "96.0% Benchmark Threshold\n(Surpasses prior 94.0% SOTA)",
-        xy=(96.0, 1.35),
-        xytext=(97.15, 1.35),
-        ha="left",
-        va="center",
-        fontsize=8.9,
-        fontweight="bold",
-        color="#922B21",
-        bbox=dict(boxstyle="round,pad=0.30", facecolor="#FDEDEC", edgecolor="#E6B0AA", lw=0.85),
-        arrowprops=dict(arrowstyle="-|>", color="#B03A2E", lw=1.25),
-        zorder=5,
-    )
-
-    # Error bar / range indicator on our 5-Fold StratifiedGroupKFold result (97.71% +/- 1.77%)
-    trial_idx = 5
-    ax.errorbar(
-        [97.71],
-        [trial_idx],
-        xerr=[[1.77], [1.77]],
-        fmt="none",
-        ecolor="#041E42",
-        elinewidth=1.8,
-        capsize=4.5,
-        capthick=1.6,
-        zorder=6,
-    )
-
-    # Bold numeric percentage labels directly beside each bar
-    for idx, (bar, s) in enumerate(zip(bars, studies)):
+    # Symmetrical in-bar percentage labels in crisp bold 10.5 pt white text (zorder=5)
+    for bar, s in zip(bars, studies):
         x_val = bar.get_width()
-        offset = 2.05 if idx == trial_idx else 0.35
-        text_color = "#041E42" if s["is_ours"] else "#102A43"
-        font_size = 10.4 if s["is_ours"] else 9.7
         ax.text(
-            x_val + offset,
+            x_val - 0.45,
             bar.get_y() + bar.get_height() / 2.0,
             s["val_text"],
             va="center",
-            ha="left",
-            fontsize=font_size,
+            ha="right",
+            fontsize=10.5,
             fontweight="bold",
-            color=text_color,
-            zorder=6,
+            color="#FFFFFF",
+            zorder=5,
         )
+
+    # Opaque callout badge for Prior SOTA (94.00%) so no dashed line crosses behind text
+    ax.text(
+        94.0,
+        0.02,
+        "Prior SOTA (94.00%)",
+        ha="center",
+        va="center",
+        fontsize=9.5,
+        fontweight="bold",
+        color="#475569",
+        bbox=dict(
+            boxstyle="round,pad=0.26",
+            facecolor="#FFFFFF",
+            edgecolor="#CBD5E1",
+            linewidth=0.9,
+        ),
+        zorder=5,
+    )
 
     ax.set_yticks(y_pos)
     ax.set_yticklabels(
         [s["label"] for s in studies],
-        fontsize=9.7,
+        fontsize=10.5,
         fontweight="bold",
-        color="#102A43",
+        color="#0F172A",
     )
 
-    ax.set_xlim(78.0, 105.5)
-    ax.set_ylim(-1.05, 5.75)
+    ax.set_xlim(80.0, 101.5)
+    ax.set_ylim(-0.55, 4.55)
     ax.set_xticks([80, 84, 88, 92, 96, 100])
-    ax.set_xticklabels(["80%", "84%", "88%", "92%", "96%", "100%"], fontsize=10.0, fontweight="bold")
-    ax.set_xlabel("Reported Classification Accuracy (%)", fontsize=11.0, fontweight="bold", labelpad=10)
-    ax.set_title(
-        "Comparison with Published Studies on the Al-Jubouri 3D Kinect v2 Gait Dataset",
-        fontsize=13.0,
+    ax.set_xticklabels(
+        ["80%", "84%", "88%", "92%", "96%", "100%"],
+        fontsize=10.5,
         fontweight="bold",
-        color="#041E42",
-        pad=14,
+        color="#0F172A",
+    )
+    ax.set_xlabel(
+        "Reported Classification Accuracy (%)",
+        fontsize=10.8,
+        fontweight="bold",
+        color="#0F172A",
+        labelpad=8,
     )
 
-    # Clean spines & gridlines
-    ax.grid(axis="x", linestyle="--", linewidth=0.7, color="#D5E3F0", alpha=0.9, zorder=0)
-    ax.grid(axis="y", visible=False)
+    # Clean spines
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_color("#334E68")
-    ax.spines["bottom"].set_color("#334E68")
-
-    # Legend in open bottom-right space with generous vertical margin below bar 0
-    legend_handles = [
-        mpatches.Patch(
-            facecolor="#486581",
-            edgecolor="#243B53",
-            label="Published Studies on Al-Jubouri Dataset (87.0% – 94.0%)",
-        ),
-        mpatches.Patch(
-            facecolor="#083D77",
-            edgecolor="#041E42",
-            label="Ours (Tuned CatBoost) — Leak-Free 5-Fold StratifiedGroupKFold (97.71% ± 1.77%, AUROC: 0.9990)",
-        ),
-    ]
-    ax.legend(
-        handles=legend_handles,
-        loc="lower right",
-        fontsize=8.8,
-        frameon=True,
-        facecolor="#FFFFFF",
-        edgecolor="#BCCCDC",
-        framealpha=0.98,
-    )
+    ax.spines["left"].set_color("#334155")
+    ax.spines["left"].set_linewidth(1.1)
+    ax.spines["bottom"].set_color("#334155")
+    ax.spines["bottom"].set_linewidth(1.1)
 
     plt.tight_layout()
-    plt.savefig(output_path, dpi=300, bbox_inches="tight", pad_inches=0.2)
+    plt.savefig(output_path, dpi=300, bbox_inches="tight", pad_inches=0.14)
     plt.close(fig)
     os.makedirs(os.path.join("results", "figures"), exist_ok=True)
     shutil.copy2(output_path, os.path.join("results", "figures", "literature_comparison_chart.png"))
