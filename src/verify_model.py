@@ -95,7 +95,6 @@ def main() -> None:
         sens = recall_score(y_true, preds, pos_label=1)
         f1 = f1_score(y_true, preds, pos_label=1)
         print(
-            f"  * Full-Cohort Reference Fit : Acc = {acc * 100:.2f}% | AUROC = {auroc:.4f} | "
             f"Sens = {sens * 100:.2f}% | F1 = {f1:.4f}"
         )
     print("=" * 90)

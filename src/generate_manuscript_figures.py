@@ -176,824 +176,756 @@ def generate_methodology_architecture(
 ) -> None:
     """
     Generates Figure 1: Complete Methodology Architecture Diagram (`methodology_architecture.png`).
-    Matches the clean block-and-arrow visual layout, color harmony, vertical feature-vector strip,
-    dashed domain grouping containers, and structured left-to-right flow of the reference diagram.
+    Uses a compact, high-legibility 2-Row Serpentine Pipeline Layout (`figsize=(13.0, 8.2)`, 300 DPI)
+    designed so every single label (>= 10.5 pt minimum font size floor) is razor-sharp and 100%
+    legible when embedded at standard A4/IEEE manuscript width (~6.5 inches) without zooming.
     """
     configure_typography()
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    # Use explicit axes position without bbox_inches='tight' distortion
-    fig = plt.figure(figsize=(22.0, 10.6), dpi=300, facecolor="#FFFFFF")
+    fig = plt.figure(figsize=(13.0, 8.2), dpi=300, facecolor="#FFFFFF")
     ax = fig.add_axes([0.008, 0.008, 0.984, 0.984])
-    ax.set_xlim(0.0, 22.0)
-    ax.set_ylim(0.60, 11.15)
+    ax.set_xlim(0.0, 13.0)
+    ax.set_ylim(0.0, 8.2)
     ax.axis("off")
 
-    # Outer border frame (matching the clean figure frame of the reference image)
+    # Outer clean border frame
     outer_frame = Rectangle(
-        (0.15, 0.72),
-        21.70,
-        10.30,
+        (0.10, 0.10),
+        12.80,
+        8.00,
         facecolor="#FFFFFF",
-        edgecolor="#9FB3C8",
-        linewidth=1.2,
+        edgecolor="#CBD5E1",
+        linewidth=1.5,
         zorder=0,
     )
     ax.add_patch(outer_frame)
 
-    # Top Title Banner
-    ax.text(
-        11.0,
-        10.64,
-        "Leak-Free 3D Kinematic Biomarker & Subject-Disjoint CatBoost Architecture for Pediatric ASD Gait Screening",
-        ha="center",
-        va="center",
-        fontsize=14.0,
-        fontweight="bold",
-        color="#102A43",
-    )
+    # =========================================================================
+    # TOP ROW: STAGES 1 -> 2 -> 3 (Left-to-Right, y = 4.35 .. 7.45)
+    # =========================================================================
 
-    # =========================================================================
-    # STAGE 1: INPUT COHORT (x = 0.45 .. 3.25)
-    # =========================================================================
+    # -------------------------------------------------------------------------
+    # STAGE 1: INPUT COHORT (KINECT V2) (x = 0.25 .. 3.45)
+    # -------------------------------------------------------------------------
     ax.text(
         1.85,
-        9.96,
-        "1. Input Cohort\n(3D Kinect v2 Dataset)",
+        7.74,
+        "1. Input Cohort (Kinect v2)",
+        ha="center",
+        va="center",
+        fontsize=13.5,
+        fontweight="bold",
+        color="#0F172A",
+    )
+    _draw_rounded_box(
+        ax,
+        x=0.25,
+        y=4.35,
+        w=3.20,
+        h=3.10,
+        facecolor="#F8FAFC",
+        edgecolor="#475569",
+        lw=1.6,
+        pad=0.04,
+        rounding_size=0.14,
+    )
+
+    # Sub-box 1A: 100 Subjects & 700 Trials (with minimalist 25-joint skeleton icon)
+    _draw_rounded_box(
+        ax,
+        x=0.40,
+        y=5.96,
+        w=2.90,
+        h=1.32,
+        facecolor="#EFF6FF",
+        edgecolor="#2563EB",
+        lw=1.5,
+        pad=0.04,
+        rounding_size=0.12,
+        zorder=3,
+    )
+    _draw_skeleton_glyph(
+        ax,
+        cx=0.72,
+        cy=6.58,
+        scale=0.46,
+        color="#1D4ED8",
+        root_highlight=True,
+        zorder=4,
+    )
+    ax.text(
+        2.15,
+        6.92,
+        "100 Subjects",
+        ha="center",
+        va="center",
+        fontsize=12.0,
+        fontweight="bold",
+        color="#111827",
+        zorder=4,
+    )
+    ax.text(
+        2.15,
+        6.34,
+        "50 ASD  |  50 TD\n700 Trials (7 per child)",
         ha="center",
         va="center",
         fontsize=10.6,
-        fontweight="bold",
-        color="#102A43",
+        fontweight="semibold",
+        color="#1E293B",
+        zorder=4,
     )
 
+    # Sub-box 1B: 25 3D Skeletal Joints
     _draw_rounded_box(
         ax,
-        x=0.50,
-        y=2.85,
-        w=2.70,
-        h=6.60,
-        facecolor="#FDF4F2",
-        edgecolor="#486581",
-        lw=1.3,
-        pad=0.06,
-    )
-
-    # Top sub-card: Cohort Demographics
-    _draw_rounded_box(
-        ax,
-        x=0.68,
-        y=6.78,
-        w=2.34,
-        h=2.45,
-        facecolor="#FADBD8",
-        edgecolor="#B03A2E",
-        lw=1.1,
-        pad=0.05,
+        x=0.40,
+        y=4.52,
+        w=2.90,
+        h=1.24,
+        facecolor="#EFF6FF",
+        edgecolor="#2563EB",
+        lw=1.5,
+        pad=0.04,
+        rounding_size=0.12,
         zorder=3,
     )
     ax.text(
         1.85,
-        8.96,
-        "Al-Jubouri Dryad Cohort",
-        ha="center",
-        va="center",
-        fontsize=9.4,
-        fontweight="bold",
-        color="#641E16",
-        zorder=4,
-    )
-    _draw_skeleton_glyph(ax, cx=1.08, cy=7.78, scale=0.58, color="#78281F", root_highlight=False)
-    ax.text(
-        2.10,
-        7.82,
-        "N = 100 Subjects\n• 50 ASD\n• 50 TD\n\n700 Sequences\n(7 trials/child)",
-        ha="center",
-        va="center",
-        fontsize=8.4,
-        fontweight="bold",
-        color="#102A43",
-        zorder=4,
-    )
-
-    # Bottom sub-card: Raw 3D Skeletal Stream
-    _draw_rounded_box(
-        ax,
-        x=0.68,
-        y=3.12,
-        w=2.34,
-        h=3.34,
-        facecolor="#EBF5FB",
-        edgecolor="#2874A6",
-        lw=1.1,
-        pad=0.05,
-        zorder=3,
-    )
-    ax.text(
-        1.85,
-        6.16,
+        5.42,
         "25 3D Skeletal Joints",
         ha="center",
         va="center",
-        fontsize=9.4,
+        fontsize=12.0,
         fontweight="bold",
-        color="#1B4F72",
+        color="#111827",
         zorder=4,
     )
     ax.text(
         1.85,
-        4.60,
-        "30 Hz Frame Trajectories\n\n3D Joint Coordinates:\n"
-        r"$\mathbf{P}_t \in \mathbb{R}^{T \times 25 \times 3}$"
-        "\n"
-        r"$(X, Y, Z)$ in meters"
-        "\n\nStrict Subject Mapping:\nChild_01 to Child_100",
-        ha="center",
-        va="center",
-        fontsize=8.3,
-        color="#102A43",
-        zorder=4,
-    )
-
-    # =========================================================================
-    # STAGE 2: SPATIAL & AUGMENTATION NORMALIZATION (x = 3.75 .. 7.15)
-    # =========================================================================
-    ax.text(
-        5.45,
-        9.96,
-        "2. Spatial & Augmentation\nNormalization",
+        4.86,
+        "30 Hz Depth Stream\n(X, Y, Z) in meters",
         ha="center",
         va="center",
         fontsize=10.6,
-        fontweight="bold",
-        color="#102A43",
+        fontweight="semibold",
+        color="#1E293B",
+        zorder=4,
     )
 
+    # -------------------------------------------------------------------------
+    # STAGE 2: SPATIAL NORMALIZATION (x = 4.00 .. 7.35)
+    # -------------------------------------------------------------------------
+    ax.text(
+        5.675,
+        7.74,
+        "2. Spatial Normalization",
+        ha="center",
+        va="center",
+        fontsize=13.5,
+        fontweight="bold",
+        color="#0F172A",
+    )
     _draw_rounded_box(
         ax,
-        x=3.82,
-        y=2.85,
-        w=3.26,
-        h=6.60,
+        x=4.00,
+        y=4.35,
+        w=3.35,
+        h=3.10,
         facecolor="#F8FAFC",
-        edgecolor="#334E68",
-        lw=1.3,
-        pad=0.06,
+        edgecolor="#475569",
+        lw=1.6,
+        pad=0.04,
+        rounding_size=0.14,
     )
 
-    # Sub-box 2A: SpineBase Root-Centering
+    # Step 2A: SpineBase Root-Centering
     _draw_rounded_box(
         ax,
-        x=4.02,
-        y=7.46,
-        w=2.86,
-        h=1.80,
-        facecolor="#D6EAF8",
-        edgecolor="#21618C",
-        lw=1.1,
-        pad=0.05,
-        zorder=3,
-    )
-    _draw_skeleton_glyph(ax, cx=4.34, cy=8.30, scale=0.40, color="#1B4F72", root_highlight=True)
-    ax.text(
-        5.82,
-        8.36,
-        "SpineBase Root-Centering\n"
-        r"$\tilde{\mathbf{p}}_i(t) = \mathbf{p}_i(t) - \mathbf{p}_{\mathrm{SpineBase}}(t)$"
-        "\nSets Pelvis Origin at (0, 0, 0)\n(Removes camera translation)",
-        ha="center",
-        va="center",
-        fontsize=8.0,
-        fontweight="bold",
-        color="#102A43",
-        zorder=4,
-    )
-
-    # Sub-box 2B: Frame-Wise 3D Torso-Height Scaling
-    _draw_rounded_box(
-        ax,
-        x=4.02,
-        y=5.28,
-        w=2.86,
-        h=1.82,
-        facecolor="#FCF3CF",
-        edgecolor="#B7950B",
-        lw=1.1,
-        pad=0.05,
+        x=4.15,
+        y=6.48,
+        w=3.05,
+        h=0.82,
+        facecolor="#FEFCE8",
+        edgecolor="#CA8A04",
+        lw=1.5,
+        pad=0.03,
+        rounding_size=0.10,
         zorder=3,
     )
     ax.text(
-        5.45,
-        6.19,
-        "Torso-Height Scaling\n"
-        r"$L_t = \|\mathrm{SpineShoulder} - \mathrm{SpineBase}\|_2$"
-        "\n"
-        r"$\hat{\mathbf{p}}_i(t) = \tilde{\mathbf{p}}_i(t) \,/\, L_t$"
-        "\nRemoves child stature & depth bias",
+        5.675,
+        7.06,
+        "SpineBase Root-Centering",
         ha="center",
         va="center",
-        fontsize=8.1,
+        fontsize=12.0,
         fontweight="bold",
-        color="#102A43",
+        color="#111827",
+        zorder=4,
+    )
+    ax.text(
+        5.675,
+        6.70,
+        "Removes camera offset",
+        ha="center",
+        va="center",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
-    # Sub-box 2C: Isotropic Coronal Calibration
+    # Step 2B: Trunk-Length Scaling
     _draw_rounded_box(
         ax,
-        x=4.02,
-        y=3.10,
-        w=2.86,
-        h=1.82,
-        facecolor="#E8DAEF",
-        edgecolor="#6C3483",
-        lw=1.1,
-        pad=0.05,
+        x=4.15,
+        y=5.49,
+        w=3.05,
+        h=0.82,
+        facecolor="#FEFCE8",
+        edgecolor="#CA8A04",
+        lw=1.5,
+        pad=0.03,
+        rounding_size=0.10,
         zorder=3,
     )
     ax.text(
-        5.45,
-        4.01,
-        "Isotropic Coronal Calibration\n"
-        "Per-trial mirror canonicalization\n"
-        r"($X_{\mathrm{ShoulderRight}} \geq X_{\mathrm{ShoulderLeft}}$)"
-        "\nCorrects "
-        r"$0.7\times / 1.6\times$"
-        " mediolateral scaling",
+        5.675,
+        6.07,
+        "Trunk-Length Scaling",
         ha="center",
         va="center",
-        fontsize=8.1,
+        fontsize=12.0,
         fontweight="bold",
-        color="#102A43",
+        color="#111827",
+        zorder=4,
+    )
+    ax.text(
+        5.675,
+        5.71,
+        "Removes height & depth bias",
+        ha="center",
+        va="center",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
-    # Internal vertical flow arrows inside Stage 2
-    _draw_arrow(ax, 5.45, 7.41, 5.45, 7.15, color="#243B53", lw=1.3, mutation_scale=11)
-    _draw_arrow(ax, 5.45, 5.23, 5.45, 4.97, color="#243B53", lw=1.3, mutation_scale=11)
-
-    # Arrow from Stage 1 to Stage 2
-    _draw_arrow(ax, 3.26, 6.15, 3.76, 6.15, color="#102A43", lw=1.8, mutation_scale=15)
-
-    # =========================================================================
-    # STAGE 3: BIOMECHANICAL FEATURE ENGINEERING (x = 7.65 .. 13.55)
-    # Two-branch dashed domain blocks (like DSRSENet / Handcraft boxes in reference)
-    # =========================================================================
+    # Step 2C: Isotropic Coronal Calibration
+    _draw_rounded_box(
+        ax,
+        x=4.15,
+        y=4.50,
+        w=3.05,
+        h=0.82,
+        facecolor="#FAF5FF",
+        edgecolor="#9333EA",
+        lw=1.5,
+        pad=0.03,
+        rounding_size=0.10,
+        zorder=3,
+    )
     ax.text(
-        10.60,
-        9.96,
-        "3. Biomechanical Feature Engineering:\n86 Scale-Invariant 3D Biomarkers",
+        5.675,
+        5.08,
+        "Isotropic Coronal Calibration",
+        ha="center",
+        va="center",
+        fontsize=12.0,
+        fontweight="bold",
+        color="#111827",
+        zorder=4,
+    )
+    ax.text(
+        5.675,
+        4.72,
+        "Aligns mirror/mediolateral scale",
         ha="center",
         va="center",
         fontsize=10.6,
-        fontweight="bold",
-        color="#102A43",
-    )
-
-    # Upper Dashed Container: Inter-Limb & Joint Angular Kinematics
-    _draw_rounded_box(
-        ax,
-        x=7.72,
-        y=6.32,
-        w=5.76,
-        h=3.13,
-        facecolor="#FDFEFE",
-        edgecolor="#243B53",
-        lw=1.25,
-        linestyle="--",
-        pad=0.06,
-        zorder=2,
-    )
-    ax.text(
-        10.60,
-        9.25,
-        "Spatial Inter-Limb & Sagittal/3D Joint Angular Kinematics",
-        ha="center",
-        va="center",
-        fontsize=9.2,
-        fontweight="bold",
-        color="#1B4F72",
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
-    # Domain Box 3A
+    # Arrow Stage 1 -> Stage 2
+    _draw_arrow(
+        ax,
+        3.50,
+        5.90,
+        3.95,
+        5.90,
+        color="#334155",
+        lw=2.2,
+        mutation_scale=18.0,
+    )
+
+    # -------------------------------------------------------------------------
+    # STAGE 3: 86 KINEMATIC BIOMARKERS (x = 7.90 .. 12.75)
+    # Clean 2x2 Grid of 4 Concise Domain Cards
+    # -------------------------------------------------------------------------
+    ax.text(
+        10.325,
+        7.74,
+        "3. 86 Kinematic Biomarkers",
+        ha="center",
+        va="center",
+        fontsize=13.5,
+        fontweight="bold",
+        color="#0F172A",
+    )
     _draw_rounded_box(
         ax,
         x=7.90,
-        y=6.52,
-        w=2.60,
-        h=2.46,
-        facecolor="#FADBD8",
-        edgecolor="#A93226",
-        lw=1.1,
-        pad=0.05,
-        zorder=3,
-    )
-    ax.text(
-        9.20,
-        8.68,
-        "Domain I: Contralateral\nCross-Distances (14)",
-        ha="center",
-        va="center",
-        fontsize=8.7,
-        fontweight="bold",
-        color="#641E16",
-        zorder=4,
-    )
-    ax.text(
-        9.20,
-        7.42,
-        "• ElbowLeft ↔ FootRight (mean/std/min)\n"
-        "• ElbowRight ↔ FootLeft (mean/std/min)\n"
-        "• WristLeft ↔ AnkleRight (mean/min)\n"
-        "• WristRight ↔ AnkleLeft (mean/std/min)\n"
-        "• Diagonal Wrist-Ankle Asymmetry\n"
-        "• HandTipRight-Hip & Radial Reach",
-        ha="center",
-        va="center",
-        fontsize=7.65,
-        color="#102A43",
-        zorder=4,
-    )
-
-    # Domain Box 3B
-    _draw_rounded_box(
-        ax,
-        x=10.72,
-        y=6.52,
-        w=2.58,
-        h=2.46,
-        facecolor="#FCF3CF",
-        edgecolor="#B7950B",
-        lw=1.1,
-        pad=0.05,
-        zorder=3,
-    )
-    ax.text(
-        12.01,
-        8.68,
-        "Domain II: Sagittal/Coronal\nJoint Angles & ROM (17)",
-        ha="center",
-        va="center",
-        fontsize=8.7,
-        fontweight="bold",
-        color="#7D6608",
-        zorder=4,
-    )
-    ax.text(
-        12.01,
-        7.42,
-        "• Sagittal (Y-Z) Knee Flexion\n  (mean, std, angular velocity)\n"
-        "• Sagittal Hip Flexion/Extension\n  (mean, std, max ROM, ang. vel.)\n"
-        "• 3D Knee Flexion Angle\n"
-        "• 3D Shoulder & Bilateral Elbow\n  Flexion/Abduction Angles",
-        ha="center",
-        va="center",
-        fontsize=7.65,
-        color="#102A43",
-        zorder=4,
-    )
-
-    # Lower Dashed Container: Dynamic Derivatives & Postural/Guarding Coupling
-    _draw_rounded_box(
-        ax,
-        x=7.72,
-        y=2.85,
-        w=5.76,
-        h=3.13,
-        facecolor="#FDFEFE",
-        edgecolor="#243B53",
-        lw=1.25,
+        y=4.35,
+        w=4.85,
+        h=3.10,
+        facecolor="#F8FAFC",
+        edgecolor="#475569",
+        lw=1.6,
         linestyle="--",
-        pad=0.06,
-        zorder=2,
-    )
-    ax.text(
-        10.60,
-        5.78,
-        "Dynamic Motion Derivatives & Postural/Pelvic-Limb Guarding Indices",
-        ha="center",
-        va="center",
-        fontsize=9.2,
-        fontweight="bold",
-        color="#1B4F72",
-        zorder=4,
+        pad=0.04,
+        rounding_size=0.14,
     )
 
-    # Domain Box 3C
+    # Domain I (Top-Left)
     _draw_rounded_box(
         ax,
-        x=7.90,
-        y=3.05,
-        w=2.60,
-        h=2.46,
-        facecolor="#D5F5E3",
-        edgecolor="#1E8449",
-        lw=1.1,
-        pad=0.05,
+        x=8.06,
+        y=5.96,
+        w=2.18,
+        h=1.32,
+        facecolor="#FFF7ED",
+        edgecolor="#EA580C",
+        lw=1.5,
+        pad=0.03,
+        rounding_size=0.10,
         zorder=3,
     )
     ax.text(
-        9.20,
-        5.21,
-        "Domain III: Motion Derivatives\n& Spectral Irregularity (10)",
+        9.15,
+        6.92,
+        "Domain I (14)",
         ha="center",
         va="center",
-        fontsize=8.7,
+        fontsize=12.0,
         fontweight="bold",
-        color="#145A32",
+        color="#111827",
         zorder=4,
     )
     ax.text(
-        9.20,
-        3.95,
-        "• 1st-Order 3D & Sagittal Velocity\n  (AnkleLeft/Right, WristRight)\n"
-        "• 2nd-Order 3D Acceleration\n  (AnkleRight, WristLeft mean/std)\n"
-        "• Wrist-to-Ankle Velocity Ratio\n"
-        "• FFT Step Spectral Irregularity\n  & Dominant Rhythm Ratio",
+        9.15,
+        6.34,
+        "Contralateral\nCross-Distances",
         ha="center",
         va="center",
-        fontsize=7.65,
-        color="#102A43",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
-    # Domain Box 3D
+    # Domain II (Top-Right)
     _draw_rounded_box(
         ax,
-        x=10.72,
-        y=3.05,
-        w=2.58,
-        h=2.46,
-        facecolor="#D6EAF8",
-        edgecolor="#21618C",
-        lw=1.1,
-        pad=0.05,
+        x=10.41,
+        y=5.96,
+        w=2.18,
+        h=1.32,
+        facecolor="#FEFCE8",
+        edgecolor="#CA8A04",
+        lw=1.5,
+        pad=0.03,
+        rounding_size=0.10,
         zorder=3,
     )
     ax.text(
-        12.01,
-        5.21,
-        "Domain IV: Postural/Pelvic-Limb\nGuarding Indices (45)",
+        11.50,
+        6.92,
+        "Domain II (17)",
         ha="center",
         va="center",
-        fontsize=8.7,
+        fontsize=12.0,
         fontweight="bold",
-        color="#1B4F72",
+        color="#111827",
         zorder=4,
     )
     ax.text(
-        12.01,
-        3.95,
-        "• Isotropic Coronal Span (Elbows,\n  Wrists, Hands, Thumbs, Tibia)\n"
-        "• Distal Foot-Ankle Compliance\n"
-        "• Arm Swing Asymmetry & Trunk Lean\n"
-        "• 6 Multi-Segment Synergy Indices:\n  Whole-Body Contralateral-Axial,\n  Bilateral Postural & Arm Guarding",
+        11.50,
+        6.34,
+        "Sagittal & Coronal\nJoint Angles",
         ha="center",
         va="center",
-        fontsize=7.55,
-        color="#102A43",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
-    # Branching arrows from Stage 2 to Upper and Lower Stage 3 blocks
-    _draw_arrow(ax, 7.14, 7.25, 7.66, 7.85, color="#102A43", lw=1.6, mutation_scale=14)
-    _draw_arrow(ax, 7.14, 5.05, 7.66, 4.42, color="#102A43", lw=1.6, mutation_scale=14)
-
-    # =========================================================================
-    # FEATURE FUSION VECTOR STRIP (x = 13.98 .. 14.44)
-    # Mirrors the vertical segmented feature strip in the reference image
-    # =========================================================================
-    ax.text(
-        14.21,
-        9.42,
-        "86-D\nBiomarker\nVector",
-        ha="center",
-        va="center",
-        fontsize=8.7,
-        fontweight="bold",
-        color="#102A43",
-    )
-
-    strip_x = 13.99
-    strip_w = 0.44
-    n_cells = 14
-    cell_h = 0.43
-    strip_y0 = 2.95
-    palette_strip = [
-        "#F5B7B1",
-        "#F5B7B1",
-        "#F5B7B1",
-        "#F9E79F",
-        "#F9E79F",
-        "#F9E79F",
-        "#A9DFBF",
-        "#A9DFBF",
-        "#A9DFBF",
-        "#AED6F1",
-        "#AED6F1",
-        "#AED6F1",
-        "#D2B4DE",
-        "#D2B4DE",
-    ]
-    for idx in range(n_cells):
-        cy_cell = strip_y0 + idx * cell_h
-        rect = Rectangle(
-            (strip_x, cy_cell),
-            strip_w,
-            cell_h - 0.03,
-            facecolor=palette_strip[n_cells - 1 - idx],
-            edgecolor="#334E68",
-            linewidth=0.85,
-            zorder=4,
-        )
-        ax.add_patch(rect)
-
-    # Arrows from Upper & Lower Feature Engineering containers into the 86-D Feature Vector Strip
-    _draw_arrow(ax, 13.54, 7.85, 13.96, 7.55, color="#102A43", lw=1.55, mutation_scale=13)
-    _draw_arrow(ax, 13.54, 4.42, 13.96, 4.65, color="#102A43", lw=1.55, mutation_scale=13)
-
-    # =========================================================================
-    # STAGE 4: LEAK-FREE SUBJECT-DISJOINT VALIDATION (x = 14.95 .. 18.35)
-    # Modeled on the grey shaded classifier/optimization container in reference
-    # =========================================================================
-    ax.text(
-        16.65,
-        9.96,
-        "4. Leak-Free Subject-Disjoint\nValidation",
-        ha="center",
-        va="center",
-        fontsize=10.6,
-        fontweight="bold",
-        color="#102A43",
-    )
-
+    # Domain III (Bottom-Left)
     _draw_rounded_box(
         ax,
-        x=14.95,
-        y=2.85,
-        w=3.40,
-        h=6.60,
-        facecolor="#EAEEF3",
-        edgecolor="#334E68",
-        lw=1.3,
-        pad=0.06,
-    )
-
-    # Sub-box 4A: 5-Fold StratifiedGroupKFold
-    _draw_rounded_box(
-        ax,
-        x=15.13,
-        y=7.02,
-        w=3.04,
-        h=2.22,
-        facecolor="#FDEBD0",
-        edgecolor="#CA6F1E",
-        lw=1.15,
-        pad=0.05,
+        x=8.06,
+        y=4.50,
+        w=2.18,
+        h=1.32,
+        facecolor="#F0FDF4",
+        edgecolor="#16A34A",
+        lw=1.5,
+        pad=0.03,
+        rounding_size=0.10,
         zorder=3,
     )
     ax.text(
-        16.65,
-        8.86,
-        "5-Fold StratifiedGroupKFold\n(Grouped by subject_id)",
+        9.15,
+        5.46,
+        "Domain III (10)",
         ha="center",
         va="center",
-        fontsize=9.0,
+        fontsize=12.0,
         fontweight="bold",
-        color="#784212",
+        color="#111827",
         zorder=4,
     )
     ax.text(
-        16.65,
-        7.72,
-        "• 80 Train Subjects (560 Trials) / Fold\n"
-        "• 20 Unseen Test Subjects (140 Trials)\n"
-        "• All 7 trials/child locked together\n"
-        "• Zero Trial / Subject Overlap\n"
-        r"  ($S_{\mathrm{train}} \cap S_{\mathrm{test}} = \emptyset$)",
+        9.15,
+        4.88,
+        "Velocity, Accel. &\nSpectral Entropy",
         ha="center",
         va="center",
-        fontsize=7.95,
-        fontweight="bold",
-        color="#102A43",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
-    # Sub-box 4B: Tuned CatBoost Classifier
+    # Domain IV (Bottom-Right)
     _draw_rounded_box(
         ax,
-        x=15.13,
-        y=4.80,
-        w=3.04,
-        h=1.90,
-        facecolor="#FADBD8",
-        edgecolor="#922B21",
-        lw=1.2,
-        pad=0.05,
+        x=10.41,
+        y=4.50,
+        w=2.18,
+        h=1.32,
+        facecolor="#EFF6FF",
+        edgecolor="#2563EB",
+        lw=1.5,
+        pad=0.03,
+        rounding_size=0.10,
         zorder=3,
     )
     ax.text(
-        16.65,
-        6.36,
-        "Tuned CatBoostClassifier",
+        11.50,
+        5.46,
+        "Domain IV (45)",
         ha="center",
         va="center",
-        fontsize=9.2,
+        fontsize=12.0,
         fontweight="bold",
-        color="#641E16",
+        color="#111827",
         zorder=4,
     )
     ax.text(
-        16.65,
-        5.48,
-        "iterations = 500 | depth = 5\n"
-        "learning_rate = 0.04 | l2_leaf_reg = 4\n"
-        "Loss = Logloss (Oblivious Decision Trees)",
+        11.50,
+        4.88,
+        "Postural & Pelvic-Limb\nGuarding",
         ha="center",
         va="center",
-        fontsize=7.95,
-        color="#102A43",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
-    # Sub-box 4C: Same-Split Baseline Comparison
-    _draw_rounded_box(
+    # Arrow Stage 2 -> Stage 3
+    _draw_arrow(
         ax,
-        x=15.13,
-        y=3.10,
-        w=3.04,
-        h=1.38,
-        facecolor="#D6EAF8",
-        edgecolor="#21618C",
-        lw=1.05,
-        pad=0.05,
-        zorder=3,
+        7.40,
+        5.90,
+        7.85,
+        5.90,
+        color="#334155",
+        lw=2.2,
+        mutation_scale=18.0,
     )
-    ax.text(
-        16.65,
-        3.79,
-        "Same-Split Baseline Comparison\n"
-        "• Random Forest: 97.00% ± 1.71%\n"
-        "• XGBoost: 96.29% ± 2.84%",
-        ha="center",
-        va="center",
-        fontsize=8.0,
-        fontweight="bold",
-        color="#1B4F72",
-        zorder=4,
-    )
-
-    # Internal arrows inside Stage 4
-    _draw_arrow(ax, 16.65, 6.97, 16.65, 6.75, color="#243B53", lw=1.3, mutation_scale=11)
-    _draw_arrow(ax, 16.65, 4.75, 16.65, 4.53, color="#243B53", lw=1.3, mutation_scale=11)
-
-    # Arrow from 86-D Feature Vector Strip into Stage 4
-    _draw_arrow(ax, 14.47, 5.95, 14.90, 5.95, color="#102A43", lw=1.8, mutation_scale=15)
 
     # =========================================================================
-    # STAGE 5: EXPLAINABLE CLINICAL OUTPUT (x = 18.88 .. 21.62)
-    # Includes Benign/TD (Green) & ASD (Crimson) output nodes + TreeSHAP & Metrics
+    # SERPENTINE CONNECTOR: STAGE 3 (Top-Right) -> STAGE 4 (Bottom-Right)
     # =========================================================================
+    _draw_arrow(
+        ax,
+        10.325,
+        4.30,
+        10.325,
+        3.82,
+        color="#334155",
+        lw=2.4,
+        mutation_scale=19.0,
+    )
     ax.text(
-        20.25,
-        9.96,
-        "5. Explainable Clinical\nOutput",
-        ha="center",
+        10.12,
+        4.06,
+        "86-D Feature Matrix (700 × 86)",
+        ha="right",
         va="center",
-        fontsize=10.6,
+        fontsize=10.8,
         fontweight="bold",
-        color="#102A43",
+        color="#0F172A",
     )
 
-    # Output Class Nodes (matching the green/red output boxes on the right of reference)
+    # =========================================================================
+    # BOTTOM ROW: STAGE 4 (Right) -> STAGE 5 (Left) (Serpentine Flow, y = 0.30 .. 3.40)
+    # =========================================================================
+
+    # -------------------------------------------------------------------------
+    # STAGE 4: SUBJECT-DISJOINT VALIDATION (x = 7.05 .. 12.75)
+    # -------------------------------------------------------------------------
+    ax.text(
+        9.90,
+        3.66,
+        "4. Subject-Disjoint Validation",
+        ha="center",
+        va="center",
+        fontsize=13.5,
+        fontweight="bold",
+        color="#0F172A",
+    )
     _draw_rounded_box(
         ax,
-        x=18.96,
-        y=8.32,
-        w=2.58,
-        h=1.08,
-        facecolor="#58A631",
-        edgecolor="#1E8449",
-        lw=1.3,
-        pad=0.05,
+        x=7.05,
+        y=0.30,
+        w=5.70,
+        h=3.10,
+        facecolor="#F8FAFC",
+        edgecolor="#475569",
+        lw=1.6,
+        pad=0.04,
+        rounding_size=0.14,
+    )
+
+    # Box 4A: 5-Fold StratifiedGroupKFold
+    _draw_rounded_box(
+        ax,
+        x=7.22,
+        y=1.92,
+        w=5.36,
+        h=1.30,
+        facecolor="#FFF7ED",
+        edgecolor="#EA580C",
+        lw=1.5,
+        pad=0.04,
+        rounding_size=0.12,
         zorder=3,
     )
     ax.text(
-        20.25,
-        8.86,
-        "Typically Developing (TD)\nClass 0: Neurotypical Gait Kinematics",
+        9.90,
+        2.86,
+        "5-Fold StratifiedGroupKFold (by subject_id)",
         ha="center",
         va="center",
-        fontsize=8.2,
+        fontsize=12.0,
         fontweight="bold",
-        color="#FFFFFF",
+        color="#111827",
+        zorder=4,
+    )
+    ax.text(
+        9.90,
+        2.30,
+        "80 Train / 20 Unseen Test Subjects per Fold\nAll 7 trials per child locked together (Zero Leakage)",
+        ha="center",
+        va="center",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
+    # Box 4B: Tuned CatBoost Classifier
     _draw_rounded_box(
         ax,
-        x=18.96,
-        y=6.92,
-        w=2.58,
-        h=1.08,
-        facecolor="#900C3F",
-        edgecolor="#581845",
-        lw=1.3,
-        pad=0.05,
+        x=7.22,
+        y=0.46,
+        w=5.36,
+        h=1.30,
+        facecolor="#FEFCE8",
+        edgecolor="#CA8A04",
+        lw=1.5,
+        pad=0.04,
+        rounding_size=0.12,
         zorder=3,
     )
     ax.text(
-        20.25,
-        7.46,
-        "Autism Spectrum (ASD)\nClass 1: Atypical Motor Phenotype",
+        9.90,
+        1.40,
+        "Tuned CatBoost Classifier (Oblivious Trees)",
         ha="center",
         va="center",
-        fontsize=8.2,
+        fontsize=12.0,
         fontweight="bold",
-        color="#FFFFFF",
+        color="#111827",
+        zorder=4,
+    )
+    ax.text(
+        9.90,
+        0.84,
+        "500 trees  |  depth = 5  |  lr = 0.04  |  L2 = 4\nBenchmarked vs. Random Forest & XGBoost on same folds",
+        ha="center",
+        va="center",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
         zorder=4,
     )
 
-    # Exact TreeSHAP & Performance Card
+    # -------------------------------------------------------------------------
+    # STAGE 5: CLINICAL OUTPUT & XAI (x = 0.25 .. 6.25)
+    # -------------------------------------------------------------------------
+    ax.text(
+        3.25,
+        3.66,
+        "5. Clinical Output & XAI",
+        ha="center",
+        va="center",
+        fontsize=13.5,
+        fontweight="bold",
+        color="#0F172A",
+    )
     _draw_rounded_box(
         ax,
-        x=18.92,
-        y=2.85,
-        w=2.66,
-        h=3.74,
-        facecolor="#F4F9FD",
-        edgecolor="#1560BD",
-        lw=1.35,
-        pad=0.06,
+        x=0.25,
+        y=0.30,
+        w=6.00,
+        h=3.10,
+        facecolor="#F8FAFC",
+        edgecolor="#475569",
+        lw=1.6,
+        pad=0.04,
+        rounding_size=0.14,
+    )
+
+    # Outcome Badge 5A (Left): Class 0: TD
+    _draw_rounded_box(
+        ax,
+        x=0.42,
+        y=2.24,
+        w=2.72,
+        h=0.98,
+        facecolor="#F0FDF4",
+        edgecolor="#16A34A",
+        lw=1.6,
+        pad=0.03,
+        rounding_size=0.10,
         zorder=3,
     )
     ax.text(
-        20.25,
-        6.26,
-        "Verified Performance &\nExact TreeSHAP Attribution",
+        1.78,
+        2.92,
+        "Class 0: TD",
         ha="center",
         va="center",
-        fontsize=8.9,
+        fontsize=12.0,
         fontweight="bold",
-        color="#083D77",
+        color="#111827",
         zorder=4,
     )
     ax.text(
-        20.25,
-        4.54,
-        "• Accuracy (5-Fold CV):\n"
-        "  97.71% ± 1.77% (684/700)\n"
-        "• AUROC: 0.9990 ± 0.0008\n"
-        "• Precision (PPV): 99.71%\n"
-        "• F1-Score: 0.9763 ± 0.0190\n\n"
-        "Top TreeSHAP Biomarkers:\n"
-        "1. Contralateral-Axial Index\n"
-        "   (|SHAP|=2.65, d=+2.20)\n"
-        "2. Postural Integration Index\n"
-        "   (|SHAP|=1.60, d=+2.02)",
+        1.78,
+        2.50,
+        "Neurotypical Gait",
         ha="center",
         va="center",
-        fontsize=7.85,
-        fontweight="bold",
-        color="#102A43",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#111827",
         zorder=4,
     )
 
-    # Forked output arrows from Stage 4 to TD, ASD, and TreeSHAP Output cards
-    _draw_arrow(ax, 18.40, 8.86, 18.91, 8.86, color="#102A43", lw=1.6, mutation_scale=13)
-    _draw_arrow(ax, 18.40, 7.46, 18.91, 7.46, color="#102A43", lw=1.6, mutation_scale=13)
-    _draw_arrow(ax, 18.40, 4.72, 18.87, 4.72, color="#102A43", lw=1.6, mutation_scale=13)
-
-    # =========================================================================
-    # BOTTOM SUMMARY STRIP
-    # =========================================================================
+    # Outcome Badge 5B (Right): Class 1: ASD
     _draw_rounded_box(
         ax,
-        x=0.50,
-        y=1.08,
-        w=21.08,
-        h=1.35,
-        facecolor="#F0F4F8",
-        edgecolor="#829AB1",
-        lw=1.0,
-        pad=0.05,
-        zorder=2,
+        x=3.36,
+        y=2.24,
+        w=2.72,
+        h=0.98,
+        facecolor="#FFF1F2",
+        edgecolor="#E11D48",
+        lw=1.6,
+        pad=0.03,
+        rounding_size=0.10,
+        zorder=3,
     )
     ax.text(
-        11.04,
-        1.75,
-        "End-to-End Methodological Guarantees:  "
-        "(1) Frame-wise SpineBase root-centering & 3D trunk-height scaling remove camera translation and child stature biases   |   "
-        "(2) Per-trial isotropic coronal calibration corrects mirror reflection & 0.7×/1.6× mediolateral scaling\n"
-        "(3) 5-Fold StratifiedGroupKFold locks all 7 trials per child into the same fold (80 train / 20 unseen test subjects per fold; zero trial overlap)   |   "
-        "(4) Exact TreeSHAP attribution links model outputs to clinical 3D motor biomarkers.",
+        4.72,
+        2.92,
+        "Class 1: ASD",
         ha="center",
         va="center",
-        fontsize=8.65,
+        fontsize=12.0,
         fontweight="bold",
-        color="#243B53",
+        color="#111827",
         zorder=4,
+    )
+    ax.text(
+        4.72,
+        2.50,
+        "Atypical Motor Phenotype",
+        ha="center",
+        va="center",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#111827",
+        zorder=4,
+    )
+
+    # Performance & TreeSHAP XAI Card (Bottom of Stage 5)
+    _draw_rounded_box(
+        ax,
+        x=0.42,
+        y=0.46,
+        w=5.66,
+        h=1.60,
+        facecolor="#EFF6FF",
+        edgecolor="#2563EB",
+        lw=1.6,
+        pad=0.04,
+        rounding_size=0.12,
+        zorder=3,
+    )
+    ax.text(
+        3.25,
+        1.72,
+        "97.71% ± 1.77% Accuracy  (AUROC 0.9990 | F1 0.9763)",
+        ha="center",
+        va="center",
+        fontsize=12.0,
+        fontweight="bold",
+        color="#111827",
+        zorder=4,
+    )
+    ax.text(
+        3.25,
+        1.02,
+        "TreeSHAP Biomarkers:\nContralateral-Axial & Postural Guarding",
+        ha="center",
+        va="center",
+        fontsize=10.8,
+        fontweight="semibold",
+        color="#1E293B",
+        zorder=4,
+    )
+
+    # Serpentine Arrow Stage 4 (Right) -> Stage 5 (Left)
+    _draw_arrow(
+        ax,
+        7.00,
+        1.85,
+        6.30,
+        1.85,
+        color="#334155",
+        lw=2.4,
+        mutation_scale=19.0,
     )
 
     fig.savefig(output_path, dpi=300)
