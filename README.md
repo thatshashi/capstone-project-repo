@@ -73,13 +73,10 @@ All models are evaluated on identical 5-fold subject-disjoint splits using the 8
 
 ---
 
-### 2.3 Diagnostic Evaluation Figures (5-Fold `StratifiedGroupKFold`)
+### 2.3 Diagnostic Evaluation Figure (5-Fold `StratifiedGroupKFold`)
 
 ![Out-of-Fold Confusion Matrix](results/figures/confusion_matrix.png)
 *Figure 3: Leak-free out-of-fold diagnostic confusion matrix across all 700 unseen-subject gait sequences (TN = 349/350 [99.71%], FP = 1/350 [0.29%], FN = 15/350 [4.29%], TP = 335/350 [95.71%]; overall accuracy = 97.71% ± 1.77%).*
-
-![Cross-Validated ROC Curve](results/roc_curve.png)
-*Figure 4: Five-fold StratifiedGroupKFold Receiver Operating Characteristic (ROC) curves grouped by subject_id (AUROC = 0.9990 ± 0.0008; operating point sensitivity = 95.71%, specificity = 99.71%).*
 
 ---
 
@@ -106,10 +103,10 @@ Exact game-theoretic feature attributions are computed via `shap.TreeExplainer` 
 | **15** | `step_spectral_irregularity` | `0.1374` | `0.8864 ± 0.4851` | `1.0689 ± 0.5419` | `+0.355` | `2.93e-09` | Step Spectral Entropy — Frequency-domain irregularity of lower-limb gait periodicity |
 
 ![TreeSHAP Motor Biomarker Beeswarm Plot](results/shap_summary.png)
-*Figure 5: TreeSHAP motor biomarker attribution beeswarm plot across the top 15 3D kinematic features (N = 700 sequences).*
+*Figure 4: TreeSHAP motor biomarker attribution beeswarm plot across the top 15 3D kinematic features (N = 700 sequences).*
 
 ![Top 15 Motor Biomarkers Bar Chart](results/figures/shap_importance_bar.png)
-*Figure 6: Ranked horizontal bar chart of the top 15 discriminative 3D kinematic motor biomarkers ordered by mean absolute TreeSHAP attribution (Mean |SHAP|) and annotated with standardized group effect sizes (Cohen's d).*
+*Figure 5: Ranked horizontal bar chart of the top 15 discriminative 3D kinematic motor biomarkers ordered by mean absolute TreeSHAP attribution (Mean |SHAP|) and annotated with standardized group effect sizes (Cohen's d).*
 
 ---
 
@@ -131,7 +128,6 @@ capstone-main/
 ├── results/
 │   ├── benchmark_metrics.csv                  # 5-fold cross-validation metrics across CatBoost, Random Forest, and XGBoost
 │   ├── feature_importance.csv                 # Top 15 motor biomarkers ranked by Mean |SHAP|
-│   ├── roc_curve.png                          # 5-fold StratifiedGroupKFold ROC curves
 │   ├── shap_summary.png                       # TreeSHAP beeswarm summary plot
 │   ├── figures/
 │   │   ├── methodology_architecture.png       # 5-stage system architecture workflow diagram (300 DPI)

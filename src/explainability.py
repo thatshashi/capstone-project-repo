@@ -5,15 +5,14 @@ Computes exact TreeSHAP (`shap.TreeExplainer`) attributions and generates all pu
 figures and clinical summary tables using a unified academic light-blue-to-deep-navy visual palette:
 1. `results/shap_summary.png` & `results/figures/shap_beeswarm.png` — SHAP Beeswarm plot of top 15 motor biomarkers.
 2. `results/figures/shap_importance_bar.png` — Ranked horizontal bar chart of top 15 motor biomarkers with colourbar.
-3. `results/roc_curve.png` & `results/figures/roc_curve.png` — 5-fold StratifiedGroupKFold ROC curves.
-4. `results/figures/precision_recall_curve.png` — 5-fold StratifiedGroupKFold Precision-Recall curves.
-5. `results/figures/confusion_matrix.png` — Out-of-fold Confusion Matrix (N=700 trials).
-6. `results/figures/metrics_bar_chart.png` — Multi-metric benchmark comparison across CatBoost, RF, and XGBoost.
-7. `results/figures/diagnostic_dashboard.png` — 4-panel clinical diagnostic evaluation composite dashboard.
-8. `results/figures/literature_benchmark_comparison.png` — Forest/Lollipop & Methodological Scorecard vs. published studies on the Al-Jubouri dataset.
-9. `results/figures/model_evaluation_comparison_suite.png` — 4-panel Radar, Fold-Trajectory, Trade-off Quadrant & 100-Subject Margin Suite.
-10. `results/feature_importance.csv` & `results/metrics/top_features_clinical_report.csv` — Ranked biomarker tables.
-11. `results/metrics/literature_comparison.csv` — Synchronized 16-row literature benchmark table.
+3. `results/figures/precision_recall_curve.png` — 5-fold StratifiedGroupKFold Precision-Recall curves.
+4. `results/figures/confusion_matrix.png` — Out-of-fold Confusion Matrix (N=700 trials).
+5. `results/figures/metrics_bar_chart.png` — Multi-metric benchmark comparison across CatBoost, RF, and XGBoost.
+6. `results/figures/diagnostic_dashboard.png` — 4-panel clinical diagnostic evaluation composite dashboard.
+7. `results/figures/literature_benchmark_comparison.png` — Forest/Lollipop & Methodological Scorecard vs. published studies on the Al-Jubouri dataset.
+8. `results/figures/model_evaluation_comparison_suite.png` — 4-panel Radar, Fold-Trajectory, Trade-off Quadrant & 100-Subject Margin Suite.
+9. `results/feature_importance.csv` & `results/metrics/top_features_clinical_report.csv` — Ranked biomarker tables.
+10. `results/metrics/literature_comparison.csv` — Synchronized 16-row literature benchmark table.
 """
 
 from __future__ import annotations
@@ -485,160 +484,6 @@ def generate_shap_artifacts(
     )
 
     return importance_df
-
-
-def generate_cross_validated_roc_plot(
-    benchmark_results: Dict[str, Dict[str, Any]],
-    roc_plot_path: str = os.path.join("results", "roc_curve.png"),
-) -> None:
-    """
-    Plots and saves the 5-fold StratifiedGroupKFold cross-validated ROC curve
-    (`results/roc_curve.png` and `results/figures/roc_curve.png`) in the unified
-    academic blue palette.
-    """
-    apply_academic_style()
-    os.makedirs(os.path.dirname(roc_plot_path), exist_ok=True)
-    os.makedirs(os.path.join("results", "figures"), exist_ok=True)
-
-    fig, ax = plt.subplots(figsize=(8.6, 6.8))
-    style_axes(ax, despined=False)
-    mean_fpr = np.linspace(0.0, 1.0, 250)
-
-    cb_res = benchmark_results["CatBoost (Tuned)"]
-    tprs: List[np.ndarray] = []
-
-    fold_blues = ["#A6CBE8", "#8AB8E0", "#6FA5D6", "#5392CC", "#3A7FC2"]
-    for fold_idx, ((y_fold, probs_fold), f_color) in enumerate(
-        zip(cb_res["fold_roc_data"], fold_blues), start=1
-    ):
-        fpr, tpr, _ = roc_curve(y_fold, probs_fold)
-        fold_auc = auc(fpr, tpr)
-        interp_tpr = np.interp(mean_fpr, fpr, tpr)
-        interp_tpr[0] = 0.0
-        tprs.append(interp_tpr)
-        ax.plot(
-            fpr,
-            tpr,
-            color=f_color,
-            lw=1.25,
-            alpha=0.65,
-            linestyle="-",
-            label=f"CatBoost Fold {fold_idx} (AUC = {fold_auc:.4f})",
-            zorder=2,
-        )
-
-    mean_tpr = np.mean(tprs, axis=0)
-    mean_tpr[-1] = 1.0
-    std_tpr = np.std(tprs, axis=0)
-
-    cb_auc_mean = cb_res["auroc_mean"]
-    cb_auc_std = cb_res["auroc_std"]
-
-    ax.fill_between(
-        mean_fpr,
-        np.maximum(mean_tpr - std_tpr, 0.0),
-        np.minimum(mean_tpr + std_tpr, 1.0),
-        color="#B8D4EC",
-        alpha=0.42,
-        label="CatBoost +/- 1 SD Band (5-Fold GroupCV)",
-        zorder=3,
-    )
-    ax.plot(
-        mean_fpr,
-        mean_tpr,
-        color=NAVY_DARKEST,
-        lw=3.0,
-        label=f"CatBoost Mean ROC (AUC = {cb_auc_mean:.4f} +/- {cb_auc_std:.4f})",
-        zorder=5,
-    )
-
-    baseline_styles = [
-        ("XGBoost (Baseline)", "#1D68A8", "-.", 2.1),
-        ("Random Forest (Baseline)", "#4A90C2", "--", 2.1),
-    ]
-    for model_name, color, ls, lw in baseline_styles:
-        if model_name in benchmark_results:
-            res = benchmark_results[model_name]
-            base_tprs = []
-            for y_fold, probs_fold in res["fold_roc_data"]:
-                fpr, tpr, _ = roc_curve(y_fold, probs_fold)
-                itpr = np.interp(mean_fpr, fpr, tpr)
-                itpr[0] = 0.0
-                base_tprs.append(itpr)
-            m_tpr = np.mean(base_tprs, axis=0)
-            m_tpr[-1] = 1.0
-            ax.plot(
-                mean_fpr,
-                m_tpr,
-                color=color,
-                linestyle=ls,
-                lw=lw,
-                label=f"{model_name} (AUC = {res['auroc_mean']:.4f} +/- {res['auroc_std']:.4f})",
-                zorder=4,
-            )
-
-    op_fpr = 1.0 - cb_res["specificity_mean"]
-    op_tpr = cb_res["sensitivity_mean"]
-    ax.scatter(
-        [op_fpr],
-        [op_tpr],
-        s=70,
-        color=NAVY_DARKEST,
-        edgecolors="#FFFFFF",
-        linewidths=1.5,
-        zorder=6,
-        label=f"Operating Point (Sens = {op_tpr*100:.2f}%, Spec = {cb_res['specificity_mean']*100:.2f}%)",
-    )
-    ax.annotate(
-        f"Operating Point (p >= 0.50)\nSens = {op_tpr*100:.2f}%, Spec = {cb_res['specificity_mean']*100:.2f}%\nAcc = {cb_res['accuracy_mean']*100:.2f}% +/- {cb_res['accuracy_std']*100:.2f}%",
-        xy=(op_fpr, op_tpr),
-        xytext=(0.18, 0.78),
-        fontsize=8.8,
-        fontweight="bold",
-        color=NAVY_DARKEST,
-        bbox=dict(boxstyle="round,pad=0.35", facecolor="#EBF3FA", edgecolor="#2B7BBA", lw=0.9),
-        arrowprops=dict(arrowstyle="->", color=NAVY_DARKEST, lw=1.2, connectionstyle="arc3,rad=-0.15"),
-        zorder=6,
-    )
-
-    ax.plot(
-        [0, 1],
-        [0, 1],
-        color="#627D98",
-        lw=1.2,
-        linestyle=":",
-        label="Chance Reference (AUC = 0.5000)",
-        zorder=1,
-    )
-
-    ax.set_xlim([-0.01, 1.01])
-    ax.set_ylim([-0.01, 1.02])
-    ax.set_xlabel("False Positive Rate (1 - Specificity)", fontsize=10.8, fontweight="bold", labelpad=8)
-    ax.set_ylabel("True Positive Rate (Sensitivity / ASD Recall)", fontsize=10.8, fontweight="bold", labelpad=8)
-    ax.set_title(
-        "Cross-Validated ROC Curves (5-Fold StratifiedGroupKFold by Subject ID, N = 700 Trials)",
-        fontsize=12.2,
-        fontweight="bold",
-        color=NAVY_DARKEST,
-        pad=12,
-    )
-    ax.legend(
-        loc="lower right",
-        fontsize=8.6,
-        frameon=True,
-        facecolor="#FFFFFF",
-        edgecolor="#BCCCDC",
-        framealpha=0.96,
-    )
-    plt.tight_layout()
-    plt.savefig(roc_plot_path, dpi=300, bbox_inches="tight", pad_inches=0.2)
-    plt.savefig(
-        os.path.join("results", "figures", "roc_curve.png"),
-        dpi=300,
-        bbox_inches="tight",
-        pad_inches=0.2,
-    )
-    plt.close(fig)
 
 
 def generate_precision_recall_plot(
@@ -1674,10 +1519,6 @@ def run_explainability_pipeline(
         random_state=random_state,
     )
 
-    generate_cross_validated_roc_plot(
-        benchmark_results=benchmark_results,
-        roc_plot_path=os.path.join("results", "roc_curve.png"),
-    )
     generate_precision_recall_plot(
         benchmark_results=benchmark_results,
         y=y,
@@ -1719,7 +1560,6 @@ def run_explainability_pipeline(
     print("  Saved Publication Figures & Explainability Artifacts:")
     print("    * results/shap_summary.png & results/figures/shap_beeswarm.png")
     print("    * results/figures/shap_importance_bar.png")
-    print("    * results/roc_curve.png & results/figures/roc_curve.png")
     print("    * results/figures/precision_recall_curve.png")
     print("    * results/figures/confusion_matrix.png")
     print("    * results/figures/metrics_bar_chart.png")
